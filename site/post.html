@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文章 · 时光</title>
+  <link rel="stylesheet" href="assets/fonts/fonts.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    :root {
+      --bg: #000000;
+      --surface: #141414;
+      --surface-2: #1d1d1d;
+      --surface-3: #242424;
+      --surface-4: #303030;
+      --fg: #ffffff;
+      --muted: #999999;
+      --border: rgba(255,255,255,0.1);
+      --accent: #ffffff;
+      --font-display: "Geist", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: "Geist", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-serif: "EB Garamond", Georgia, serif;
+      --font-mono: "JetBrains Mono", "SF Mono", monospace;
+      --max-w: 720px;
+      --px: 24px;
+      --nav-h: 64px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 calc(var(--px) + 40px);
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 15px;
+    }
+    .nav-logo svg { width: 20px; height: 20px; }
+
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .nav-right a { font-size: 14px; color: var(--muted); transition: color .2s; }
+    .nav-right a:hover { color: var(--fg); }
+
+    .btn-primary {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      background: var(--fg);
+      color: var(--bg);
+      transition: opacity .2s;
+    }
+    .btn-primary:hover { opacity: .85; }
+
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 48px var(--px) 80px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 720px) 300px;
+      gap: 48px;
+      align-items: start;
+      justify-content: center;
+    }
+
+    .post-head { margin-bottom: 40px; }
+
+    .post-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--surface-4);
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .post-title {
+      font-family: var(--font-display);
+      font-size: 40px;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .post-meta {
+      font-size: 14px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+    }
+
+    .post-cover {
+      width: 100%;
+      border-radius: 16px;
+      margin-bottom: 40px;
+      aspect-ratio: 16/8;
+      object-fit: cover;
+    }
+
+    /* MARKDOWN BODY */
+    .post-body { font-size: 17px; }
+
+    .post-body h1, .post-body h2, .post-body h3, .post-body h4 {
+      font-family: var(--font-display);
+      margin: 1.6em 0 0.6em;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+    .post-body h1 { font-size: 28px; }
+    .post-body h2 { font-size: 24px; }
+    .post-body h3 { font-size: 20px; }
+    .post-body p { margin: 1.1em 0; }
+    .post-body a { color: var(--accent); border-bottom: 1px solid rgba(255,255,255,0.3); }
+    .post-body a:hover { border-bottom-color: var(--accent); }
+    .post-body strong { font-weight: 600; }
+    .post-body ul, .post-body ol { margin: 1.1em 0; padding-left: 1.5em; }
+    .post-body li { margin: 0.4em 0; }
+    .post-body blockquote {
+      border-left: 3px solid var(--accent);
+      padding: 4px 0 4px 20px;
+      margin: 1.4em 0;
+      color: var(--muted);
+      font-style: italic;
+    }
+    .post-body code {
+      font-family: var(--font-mono);
+      background: var(--surface-3);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 0.88em;
+    }
+    .post-body pre {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      overflow-x: auto;
+      margin: 1.4em 0;
+    }
+    .post-body pre code { background: none; padding: 0; }
+    .post-body img { border-radius: 12px; margin: 1.4em 0; }
+    .post-body hr { border: none; border-top: 1px solid var(--border); margin: 2em 0; }
+    .post-body table { width: 100%; border-collapse: collapse; margin: 1.4em 0; }
+    .post-body th, .post-body td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 15px; }
+    .post-body th { background: var(--surface-2); }
+
+    .not-found {
+      text-align: center;
+      padding: 40px 0;
+      color: var(--muted);
+    }
+    .not-found h1 { font-family: var(--font-display); font-size: 32px; color: var(--fg); margin-bottom: 12px; }
+    .not-found a { color: var(--accent); }
+
+    .back-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 32px;
+      transition: color .2s;
+    }
+    .back-home:hover { color: var(--fg); }
+
+    /* 右侧相关文章分栏 */
+    .related {
+      position: sticky;
+      top: calc(var(--nav-h) + 24px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .related-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 12px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .related-item { display: block; padding: 12px 2px; border-top: 1px solid var(--border); }
+    .related-item:first-of-type { border-top: none; }
+    .related-name { font-size: 15px; font-weight: 600; color: var(--fg); line-height: 1.4; transition: color .2s; }
+    .related-item:hover .related-name { color: var(--accent); }
+    .related-preview {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .related-empty { font-size: 14px; color: var(--muted); }
+
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 32px var(--px);
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 640px) {
+      .post-title { font-size: 30px; }
+      .nav { padding: 0 20px; }
+    }
+
+    @media (max-width: 960px) {
+      .layout { grid-template-columns: 1fr; gap: 32px; }
+      .related { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 0h16v8H12v8H4V0zm0 16h8v8L4 16z"></path></svg>
+      时光
+    </a>
+    <div class="nav-right">
+      <a href="index.html">首页</a>
+    </div>
+  </nav>
+
+  <main class="wrap" id="app">
+    <a href="index.html" class="back-home">← 返回首页</a>
+    <div class="layout" id="layout">
+      <div id="content"><p class="not-found">加载中…</p></div>
+      <aside class="related" id="related">
+        <div class="related-title">相关文章</div>
+        <div id="related-list" class="related-list"><p class="related-empty">加载中…</p></div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">© 2026 时光 · 用爱发电</footer>
+
+  <script>
+    var slug = new URLSearchParams(location.search).get('slug');
+
+    fetch('data/posts.json')
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        var posts = data.posts || [];
+        var post = posts.find(function (p) { return p.slug === slug; });
+        if (!post) throw new Error('notfound');
+        var html = marked.parse(post.body || '');
+        render(post, html);
+        loadRelated(post, posts);
+      })
+      .catch(function (e) {
+        var rel = document.getElementById('related');
+        if (rel) rel.style.display = 'none';
+        document.getElementById('content').innerHTML =
+          '<div class="not-found"><h1>文章不存在</h1><p><a href="index.html">返回首页</a></p></div>';
+      });
+
+    function render(post, html) {
+      document.title = post.title + ' · 时光';
+      var cover = '';
+      if (post.image) cover = '<img class="post-cover" src="' + post.image + '" alt="">';
+      document.getElementById('content').innerHTML =
+        '<header class="post-head">' +
+          '<span class="post-tag">' + esc(post.category) + '</span>' +
+          '<h1 class="post-title">' + esc(post.title) + '</h1>' +
+          '<div class="post-meta">时光 · ' + esc(fmt(post.published_at)) + '</div>' +
+        '</header>' +
+        cover +
+        '<div class="post-body">' + html + '</div>';
+    }
+
+    function fmt(d) {
+      if (!d) return '';
+      var p = d.slice(0, 10).split('-');
+      return p.length === 3 ? p[0] + '年' + (+p[1]) + '月' + (+p[2]) + '日' : d;
+    }
+
+    function esc(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, function (m) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+      });
+    }
+
+    function loadRelated(post, allPosts) {
+      var listEl = document.getElementById('related-list');
+      var tags = (post.tags || '').split(',').map(function (t) { return t.trim(); }).filter(Boolean);
+      if (tags.length === 0) {
+        listEl.innerHTML = '<p class="related-empty">暂无相关文章</p>';
+        return;
+      }
+      var related = allPosts
+        .filter(function (p) { return p.slug !== post.slug && p.status === 'published'; })
+        .filter(function (p) {
+          var postTags = (p.tags || '').split(',').map(function (t) { return t.trim(); }).filter(Boolean);
+          return tags.some(function (t) { return postTags.indexOf(t) !== -1; });
+        })
+        .slice(0, 5);
+      if (related.length === 0) {
+        listEl.innerHTML = '<p class="related-empty">暂无相关文章</p>';
+        return;
+      }
+      listEl.innerHTML = related.map(function (p) {
+        var preview = (p.preview || p.summary || '').trim();
+        return '<a class="related-item" href="post.html?slug=' + encodeURIComponent(p.slug) + '">' +
+                 '<div class="related-name">' + esc(p.title) + '</div>' +
+                 (preview ? '<div class="related-preview">' + esc(preview) + '</div>' : '') +
+               '</a>';
+      }).join('');
+    }
+  </script>
+</body></html>
