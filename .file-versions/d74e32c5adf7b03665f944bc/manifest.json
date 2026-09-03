@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 2,
+  "fileName": "site/links.html",
+  "currentVersionId": "391587d7-035f-44ea-b186-1c786c0ad6a8",
+  "entries": [
+    {
+      "id": "391587d7-035f-44ea-b186-1c786c0ad6a8",
+      "fileName": "site/links.html",
+      "version": 1,
+      "label": "Version 1",
+      "createdAt": 1788347775001,
+      "source": "ai",
+      "prompt": "1、/admin已经弃用，彻底删除相关内容\n2、把友链为纯静态，不需要再导出\n3、音乐不要管\n4、使其同步",
+      "size": 4778,
+      "mime": "text/html; charset=utf-8",
+      "kind": "html",
+      "contentPath": "0001-391587d7-035f-44ea-b186-1c786c0ad6a8.html",
+      "contentDigest": "817e2f302fec0bc21d3e5be1859c23a9f42655c65496323afdd1d8d22f92ced1",
+      "promptSource": "message"
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>后台管理（免登录）· 时光</title>
+  <link rel="stylesheet" href="/assets/fonts/fonts.css">
+  <link rel="stylesheet" href="/admin/static/admin.css?v=7">
+</head>
+<body>
+
+  <!-- 管理主界面（免登录） -->
+  <div id="admin-view">
+    <nav class="admin-nav">
+      <div class="admin-nav-left">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 0h16v8H12v8H4V0zm0 16h8v8L4 16z"></path></svg>
+        时光 · 管理后台 <span style="font-size:12px;opacity:.5">(免登录)</span>
+      </div>
+      <div class="admin-nav-right">
+        <button id="posts-nav-btn" class="nav-link-btn" hidden>文章</button>
+        <button id="inbox-nav-btn" class="nav-link-btn">收信箱</button>
+        <button id="export-btn" class="btn-export">导出数据</button>
+        <a href="/" class="nav-link">查看博客</a>
+      </div>
+    </nav>
+
+    <div class="admin-body">
+      <!-- 文章列表视图 -->
+      <section id="list-view">
+        <div class="list-toolbar">
+          <div>
+            <span class="page-title">文章</span>
+            <span class="page-sub" id="list-count"></span>
+          </div>
+          <div class="toolbar-right">
+            <select id="status-filter">
+              <option value="all">全部状态</option>
+              <option value="published">已发布</option>
+              <option value="draft">草稿</option>
+            </select>
+            <select id="cat-filter">
+              <option value="">全部分类</option>
+            </select>
+            <button id="new-post-btn" class="btn-primary">＋ 新建文章</button>
+          </div>
+        </div>
+        <div class="table-card">
+          <table>
+            <thead>
+              <tr>
+                <th>标题</th>
+                <th>分类</th>
+                <th>状态</th>
+                <th>发布时间</th>
+                <th class="th-actions">操作</th>
+              </tr>
+            </thead>
+            <tbody id="post-table"></tbody>
+          </table>
+          <p id="list-empty" class="empty-row" hidden>暂无文章</p>
+        </div>
+      </section>
+
+      <!-- 编辑视图 -->
+      <section id="edit-view" hidden>
+        <div class="edit-head">
+          <button id="back-btn" class="btn-ghost">← 返回列表</button>
+          <h2 id="edit-title">新建文章</h2>
+        </div>
+        <form id="post-form">
+          <div class="form-grid">
+            <div class="form-col form-col-main">
+              <label>标题 *
+                <input type="text" name="title" required>
+              </label>
+              <label>分类
+                <select name="category" id="category-select"></select>
+              </label>
+              <label>标签（用逗号分隔，例如：设计,思考）
+                <input type="text" name="tags" id="tags-input" placeholder="设计, 思考, 阅读">
+              </label>
+              <label>封面图（URL 或留空使用默认）
+                <input type="text" name="image" placeholder="/assets/images/framerusercontent.com/xxx.png">
+              </label>
+              <label>摘要
+                <textarea name="summary" rows="3" placeholder="文章摘要，用于卡片展示"></textarea>
+              </label>
+              <label>正文（Markdown）
+                <div class="md-toggle">
+                  <button type="button" class="md-tab active" data-mode="write">编辑</button>
+                  <button type="button" class="md-tab" data-mode="preview">预览</button>
+                </div>
+                <textarea name="body" id="body-input" rows="18" placeholder="支持 Markdown 语法…"></textarea>
+                <div id="body-preview" class="md-preview" hidden></div>
+              </label>
+            </div>
+            <div class="form-col form-col-side">
+              <div class="side-card">
+                <label>状态
+                  <select name="status">
+                    <option value="draft">草稿</option>
+                    <option value="published">已发布</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="side-card actions">
+                <button type="submit" id="save-draft-btn" class="btn-ghost">存为草稿</button>
+                <button type="button" id="publish-btn" class="btn-primary">发布</button>
+              </div>
+
+              <div class="side-card danger" id="delete-area" hidden>
+                <button type="button" id="delete-btn" class="btn-danger">删除这篇文章</button>
+              </div>
+            </div>
+          </div>
+          <p id="form-msg" class="form-msg"></p>
+        </form>
+      </section>
+
+      <!-- 收信箱视图 -->
+      <section id="inbox-view" hidden>
+        <div class="list-toolbar">
+          <div>
+            <span class="page-title">收信箱</span>
+            <span class="page-sub" id="inbox-count"></span>
+          </div>
+          <div class="toolbar-right">
+            <button id="inbox-refresh-btn" class="btn-ghost">刷新</button>
+          </div>
+        </div>
+        <div class="table-card">
+          <table>
+            <thead>
+              <tr>
+                <th class="th-msg">留言内容</th>
+                <th>IP</th>
+                <th>时间</th>
+                <th class="th-actions">操作</th>
+              </tr>
+            </thead>
+            <tbody id="inbox-table"></tbody>
+          </table>
+          <p id="inbox-empty" class="empty-row" hidden>暂无留言</p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="/admin/static/admin-open.js?v=3"></script>
+</body></html>
