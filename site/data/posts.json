@@ -1,19 +1,49 @@
 {
   "posts": [
     {
-      "id": 18,
-      "title": "测试",
-      "slug": "测试",
-      "body": "测试",
-      "summary": "测试",
-      "category": "生活随笔",
-      "tags": "#测试",
+      "id": 21,
+      "title": "Parallels Desktop虚拟机",
+      "slug": "parallels-desktop虚拟机",
+      "body": "内置补丁，即装即用\n链接：https://pan.quark.cn/s/90992eea691c?pwd=T25M\n提取码：T25M",
+      "summary": "Apple silicon目前最佳的完整Windows方案",
+      "category": "思考",
+      "tags": "Mac,虚拟机",
       "status": "published",
-      "image": "assets/images/framerusercontent.com/eGoO50sQnLTjwFBzhi9LqDdU3vQ-5d27ae4b60.png",
+      "image": "https://www.parallels.cn/static/pl/fileadmin/res/img/pd/2025/pro/pdp-hero.png",
       "views": 0,
-      "published_at": "2026-09-02 19:02:19",
-      "created_at": "2026-09-02 19:02:19",
-      "updated_at": "2026-09-02 19:03:21"
+      "published_at": "2026-09-03 19:54:45",
+      "created_at": "2026-09-03 19:54:45",
+      "updated_at": "2026-09-03 19:54:45"
+    },
+    {
+      "id": 20,
+      "title": "Adobe2025全家桶",
+      "slug": "adobe2025全家桶",
+      "body": "<img src=\"/assets/images/Adobe2025.png\" alt=\"截图\" width=\"50%\">\n\n链接：https://pan.quark.cn/s/e620f204b796?pwd=qR4W\n提取码：qR4W",
+      "summary": "Windows版本，带补丁",
+      "category": "资源",
+      "tags": "Adobe,安装包",
+      "status": "published",
+      "image": "https://www.adobe.com/federal/media_1af073e5a0cd7dec058e62d473269d930634a83a9.png?width=750&format=png&optimize=medium",
+      "views": 0,
+      "published_at": "2026-09-03 19:39:33",
+      "created_at": "2026-09-03 19:39:33",
+      "updated_at": "2026-09-03 19:47:15"
+    },
+    {
+      "id": 19,
+      "title": "（链接挂了）Windows各版本官方镜像及WEPE下载",
+      "slug": "链接挂了windows各版本官方镜像及wepe下载",
+      "body": "牛魔的，链接挂了，还在修",
+      "summary": "包括Windows11/10/7",
+      "category": "资源",
+      "tags": "Windows,镜像",
+      "status": "published",
+      "image": "https://msftstories.thesourcemediaassets.com/sites/620/2021/09/Hero-Bloom-Logo.jpg",
+      "views": 0,
+      "published_at": "2026-09-03 19:13:04",
+      "created_at": "2026-09-03 19:08:05",
+      "updated_at": "2026-09-03 19:41:32"
     }
   ]
 }
