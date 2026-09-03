@@ -1,2 +1,11 @@
 node_modules/
 .DS_Store
+.file-versions/
+.od-skills/
+data/
+*.db
+*.db-shm
+*.db-wal
+admin/
+NOTES.md
+package-lock.json
