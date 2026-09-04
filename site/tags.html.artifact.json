@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "site/tags.html",
+  "entry": "site/tags.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-04T11:09:51.988Z",
+  "updatedAt": "2026-09-04T11:09:51.988Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

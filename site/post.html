@@ -2,6 +2,7 @@
 <html lang="zh-CN"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <title>文章 · 时光</title>
   <link rel="stylesheet" href="assets/fonts/fonts.css">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -255,6 +256,9 @@
     @media (max-width: 640px) {
       .post-title { font-size: 30px; }
       .nav { padding: 0 20px; }
+      .post-cover { border-radius: 0; margin-left: calc(var(--px) * -1); margin-right: calc(var(--px) * -1); width: calc(100% + var(--px) * 2); }
+      .post-body { font-size: 16px; }
+      .post-body img { border-radius: 8px; }
     }
 
     @media (max-width: 960px) {
@@ -267,7 +271,7 @@
 
   <nav class="nav">
     <a href="index.html" class="nav-logo">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 0h16v8H12v8H4V0zm0 16h8v8L4 16z"></path></svg>
+      <svg viewBox="0 0 24 24" fill="none"><defs><linearGradient id="logo-g" x1="0" y1="0" x2="24" y2="24"><stop offset="0%" stop-color="#7b4397"/><stop offset="100%" stop-color="#dc2430"/></linearGradient></defs><rect x="2" y="5" width="12" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="3" width="12" height="16" rx="2" stroke="currentColor" stroke-width="1.5" opacity=".6"/><rect x="8" y="1" width="12" height="16" rx="2" stroke="url(#logo-g)" stroke-width="1.5"/></svg>
       时光
     </a>
     <div class="nav-right">
