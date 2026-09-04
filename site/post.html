@@ -166,15 +166,28 @@
       font-size: 0.88em;
     }
     .post-body pre {
+      position: relative;
       background: var(--surface-2);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 16px;
+      padding: 16px 16px 16px;
       overflow-x: auto;
       margin: 1.4em 0;
     }
     .post-body pre code { background: none; padding: 0; }
+    .copy-code {
+      position: absolute; top: 8px; right: 8px;
+      padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px;
+      background: var(--surface-3); color: var(--muted); font-size: 11px; cursor: pointer;
+    }
+    .copy-code:hover { color: var(--fg); border-color: rgba(255,255,255,.3); }
     .post-body img { border-radius: 12px; margin: 1.4em 0; }
+    .post-body .image-card {
+      display: block; width: fit-content; max-width: 100%; margin: 1.8em auto;
+      padding: 14px; border-radius: 30px; background: #212121;
+      box-shadow: 15px 15px 30px rgb(25,25,25), -15px -15px 30px rgb(60,60,60);
+    }
+    .post-body .image-card img { display: block; width: auto; max-width: 100%; height: auto; margin: 0; border-radius: 20px; }
     .post-body hr { border: none; border-top: 1px solid var(--border); margin: 2em 0; }
     .post-body table { width: 100%; border-collapse: collapse; margin: 1.4em 0; }
     .post-body th, .post-body td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; font-size: 15px; }
@@ -284,7 +297,7 @@
         var posts = data.posts || [];
         var post = posts.find(function (p) { return p.slug === slug; });
         if (!post) throw new Error('notfound');
-        var html = marked.parse(post.body || '');
+        var html = sanitizeHtml(marked.parse(post.body || ''));
         render(post, html);
         loadRelated(post, posts);
       })
@@ -298,7 +311,7 @@
     function render(post, html) {
       document.title = post.title + ' · 时光';
       var cover = '';
-      if (post.image) cover = '<img class="post-cover" src="' + post.image + '" alt="">';
+      if (post.image) cover = '<img class="post-cover" src="' + esc(assetPath(post.image)) + '" alt="">';
       document.getElementById('content').innerHTML =
         '<header class="post-head">' +
           '<span class="post-tag">' + esc(post.category) + '</span>' +
@@ -307,6 +320,8 @@
         '</header>' +
         cover +
         '<div class="post-body">' + html + '</div>';
+      decorateArticleImages();
+      decorateCode();
     }
 
     function fmt(d) {
@@ -318,6 +333,48 @@
     function esc(s) {
       return String(s == null ? '' : s).replace(/[&<>"']/g, function (m) {
         return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+      });
+    }
+
+    function assetPath(value) {
+      return String(value || '').replace(/^\/(assets\/)/, '$1');
+    }
+
+    function sanitizeHtml(html) {
+      var box = document.createElement('template');
+      box.innerHTML = String(html || '');
+      box.content.querySelectorAll('script,style,iframe,object,embed,form,input,button,svg,math').forEach(function (node) { node.remove(); });
+      box.content.querySelectorAll('*').forEach(function (node) {
+        Array.prototype.slice.call(node.attributes).forEach(function (attr) {
+          var name = attr.name.toLowerCase();
+          if (name.indexOf('on') === 0 || name === 'style' || ((name === 'href' || name === 'src') && /^\s*javascript:/i.test(attr.value))) node.removeAttribute(attr.name);
+          if ((name === 'src' || name === 'href') && attr.value.indexOf('/assets/') === 0) node.setAttribute(name, assetPath(attr.value));
+        });
+      });
+      return box.innerHTML;
+    }
+
+    function decorateCode() {
+      document.querySelectorAll('.post-body pre').forEach(function (pre) {
+        if (pre.querySelector('.copy-code')) return;
+        var code = pre.querySelector('code');
+        if (!code) return;
+        var button = document.createElement('button');
+        button.className = 'copy-code'; button.type = 'button'; button.textContent = '复制代码';
+        button.addEventListener('click', function () {
+          navigator.clipboard.writeText(code.textContent).then(function () { button.textContent = '已复制'; setTimeout(function () { button.textContent = '复制代码'; }, 1300); });
+        });
+        pre.appendChild(button);
+      });
+    }
+
+    function decorateArticleImages() {
+      document.querySelectorAll('.post-body img').forEach(function (image) {
+        if (image.parentNode.classList.contains('image-card')) return;
+        var frame = document.createElement('span');
+        frame.className = 'image-card';
+        image.parentNode.insertBefore(frame, image);
+        frame.appendChild(image);
       });
     }
 
