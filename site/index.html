@@ -333,6 +333,99 @@
       margin-bottom: 40px;
     }
 
+    /* —— 毛玻璃标语卡片（源：Uiverse by solid-metal；深色主题，全宽）—— */
+    .hero-card-wrap {
+      margin-bottom: 48px;
+      width: 100%;
+    }
+
+    .hero-card-wrap .container {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 0;
+      background-color: transparent;
+      overflow: hidden;
+      border-radius: 14px;
+    }
+
+    .hero-card-wrap .container::after {
+      content: " ";
+      position: absolute;
+      height: 150px;
+      width: 150px;
+      left: 18%;
+      top: 25%;
+      transform: translateX(-100%);
+      background-image: linear-gradient(135deg, #7b4397, #dc2430);
+      border-radius: 50%;
+      z-index: -1;
+      border: 2px solid rgba(255,255,255,0.15);
+      box-shadow: inset 10px 0px 20px rgba(255,255,255,0.08);
+      animation: heroOrb 28s ease-in-out infinite;
+    }
+
+    .hero-card-wrap .container::before {
+      content: " ";
+      position: absolute;
+      height: 80px;
+      width: 80px;
+      left: 14%;
+      bottom: 25%;
+      transform: translateX(-100%);
+      background-image: linear-gradient(90deg, #dc2430, #7b4397);
+      border-radius: 50%;
+      z-index: -1;
+      border: 2px solid rgba(255,255,255,0.15);
+      box-shadow: inset 10px 0px 20px rgba(255,255,255,0.08);
+    }
+
+    .hero-card-wrap .card {
+      width: 100%;
+      min-height: 200px;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 14px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: transparent;
+      padding: 32px;
+      position: relative;
+      box-shadow: inset 2px 1px 6px rgba(255,255,255,0.06);
+      overflow: hidden;
+      z-index: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      text-align: left;
+    }
+
+    .hero-card-wrap .innerText {
+      color: #ffffff;
+      font-family: var(--font-serif);
+      font-size: 42px;
+      font-weight: 400;
+      line-height: 1.2;
+      margin: 0;
+    }
+
+    .hero-card-wrap .desc {
+      padding: 8px 0 0;
+      color: #c8c8c8;
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 600px;
+    }
+
+    @keyframes heroOrb {
+      0%   { transform: translateX(0%) scale(1); }
+      50%  { transform: translateX(-100%) scale(0.8); }
+      100% { transform: translateX(0%) scale(1); }
+    }
+
     .filters {
       display: flex;
       gap: 10px;
@@ -1171,7 +1264,9 @@
       .music-card .card { max-width: 44px; padding: 0; justify-content: center; }
       .music-card .img { margin-left: 0; }
       .music-card .textBox { display: none; }
-      .hero h1 { font-size: 36px; }
+      .hero-card-wrap .innerText { font-size: 28px; }
+      .hero-card-wrap .container::after { height: 120px; width: 120px; }
+      .hero-card-wrap .container::before { height: 60px; width: 60px; }
       .updates-grid { grid-template-columns: repeat(2, 1fr); }
       .footer-grid { grid-template-columns: 1fr; }
       .footer-left { flex-direction: column; gap: 32px; }
@@ -1283,8 +1378,15 @@
 
   <!-- HERO -->
   <section class="hero" data-od-id="hero">
-    <h1>记录、思考、整理、完善</h1>
-    <p class="hero-sub" id="hero-sub">把博客当朋友圈发，分享技术，归档资源(完全随机更新)</p>
+    <div class="hero-card-wrap">
+      <div class="container">
+        <div class="card">
+          <p class="innerText">记录、思考、整理、完善</p>
+          <p class="desc">把博客当朋友圈发，分享技术，归档资源（完全随机更新）</p>
+        </div>
+      </div>
+    </div>
+    <h1 style="display:none">记录、思考、整理、完善</h1>
     <div class="filters" data-od-id="blog-filters" id="blog-filters"></div>
   </section>
 
@@ -1513,7 +1615,6 @@
         .then(function (r) { return r.json(); })
         .then(function (data) {
           state.posts = data.posts || [];
-          if (data.posts && data.posts.length > 0) document.getElementById('hero-sub').style.display = '';
           renderAll();
         })
         .catch(function () {
