@@ -183,7 +183,7 @@
     #bgm-audio {
       display: none;
     }
-    /* —— 音乐卡片（源：Uiverse by JohnnyCSilva；缩放到匹配导航项，作用域收拢到 .music-card；点击播放/暂停，文字完整显示，播放或悬停时红紫渐变窄边框）—— */
+    /* —— 音乐卡片（源：Uiverse by JohnnyCSilva；缩放到匹配导航项，作用域收拢到 .music-card；点击播放/暂停，文字完整显示，播放或悬停时灰白渐变窄边框）—— */
     .music-card .card {
       width: 100%;
       max-width: 260px;
@@ -339,68 +339,59 @@
       flex-wrap: wrap;
     }
 
-    /* 文章分类按钮 — 悬停渐变上翻效果（源：Uiverse by gharsh11032000，适配本站深色主题） */
+    /* 文章分类按钮 — 选中堆叠阴影（源：Uiverse by ZacharyCrespin，hover→active，选中/未选中反转） */
     .filter-btn {
       position: relative;
-      background-color: var(--surface-3);
-      color: #e8e8e8;
-      font-size: 14px;
-      font-weight: 600;
-      border-radius: 10px;
-      min-width: 96px;
-      height: 48px;
-      padding: 0 16px;
-      border: none;
+      margin: 0;
+      padding: 0.6em 1.4em;
+      outline: none;
+      text-decoration: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
-      overflow: hidden;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
-      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      border: none;
+      border-radius: 4px;
+      background-color: var(--surface-3);
+      color: var(--fg);
+      font-weight: 600;
+      font-size: 13px;
+      font-family: inherit;
+      min-width: 80px;
+      height: 44px;
       z-index: 0;
+      box-shadow:
+        0 0 0 0 hsl(0, 0%, 90%),
+        0 0 0 0 hsl(0, 0%, 80%),
+        0 0 0 0 hsl(0, 0%, 70%),
+        0 0 0 0 hsl(0, 0%, 60%),
+        0 0 0 0 hsl(0, 0%, 50%),
+        0 0 0 0 hsl(0, 0%, 40%),
+        0 0 0 0 hsl(0, 0%, 30%),
+        0 0 0 0 hsl(0, 0%, 20%),
+        0 0 0 0 hsl(0, 0%, 10%);
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
-    .filter-fill {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-      background: linear-gradient(135deg, #7b4397, #dc2430);
-      transform: translateY(100%);
-      transform-origin: bottom;
-      transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-      z-index: 1;
+    .filter-btn.active {
+      background-color: #fff;
+      color: #000;
+      box-shadow:
+        2px 2px 0 0 hsl(0, 0%, 90%),
+        4px 4px 0 0 hsl(0, 0%, 80%),
+        6px 6px 0 0 hsl(0, 0%, 70%),
+        8px 8px 0 0 hsl(0, 0%, 60%),
+        10px 10px 0 0 hsl(0, 0%, 50%),
+        12px 12px 0 0 hsl(0, 0%, 40%),
+        14px 14px 0 0 hsl(0, 0%, 30%),
+        16px 16px 0 0 hsl(0, 0%, 20%),
+        18px 18px 0 0 hsl(0, 0%, 10%);
     }
 
     .filter-label {
       position: relative;
       z-index: 2;
       transition: color 0.3s;
-    }
-
-    /* 未选中时按钮底部预留一小条紫红渐变色，作为选中动画的衔接起点
-       （z-index 低于 .filter-fill，填充层上滑时自然覆盖它，形成连续衔接） */
-    .filter-btn::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 3px;
-      border-radius: 0 0 10px 10px;
-      background: linear-gradient(135deg, #7b4397, #dc2430);
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .filter-btn:hover .filter-fill,
-    .filter-btn.active .filter-fill {
-      transform: translateY(0);
-    }
-
-    .filter-btn:hover .filter-label,
-    .filter-btn.active .filter-label {
-      color: var(--fg);
     }
 
     .filter-btn:focus {
@@ -444,7 +435,7 @@
       gap: 20px;
     }
 
-    /* —— 文章卡片（源：Uiverse by kennyotsu 鼠标悬停三维倾斜卡片；作用域收拢到 .update-tilt；未悬停灰底、悬停红紫渐变边框，不改变数据流）—— */
+    /* —— 文章卡片（源：Uiverse by kennyotsu 鼠标悬停三维倾斜卡片；作用域收拢到 .update-tilt；未悬停灰底、悬停灰白渐变边框，不改变数据流）—— */
     .update-tilt {
       position: relative;
       width: 100%;
@@ -1147,7 +1138,7 @@
       .footer-message-col { max-width: 100%; }
     }
 
-    /* —— 回到顶部按钮（源：Uiverse by vinodjangid07；彩色部分改为分类栏同款红紫渐变）—— */
+    /* —— 回到顶部按钮（源：Uiverse by vinodjangid07；彩色部分改为灰白黑色）—— */
     .back-to-top {
       width: 50px;
       height: 50px;
@@ -1366,7 +1357,6 @@
       var names = ['全部'].concat(CATEGORIES);
       el.innerHTML = names.map(function (n) {
         return '<button class="filter-btn' + (n === state.filter ? ' active' : '') + '" data-cat="' + n + '">' +
-                 '<span class="filter-fill"></span>' +
                  '<span class="filter-label">' + n + '</span>' +
                '</button>';
       }).join('');
