@@ -447,8 +447,10 @@
         var post = posts.find(function (p) { return p.slug === slug; });
         if (!post) throw new Error('notfound');
         var bodyMd = stripBodyDownloadLines(post.body || '', downloadEntries(post.downloads, post.body));
+        var layoutMap = extractLayoutMap(bodyMd);
+        bodyMd = bodyMd.replace(/\{width=\d+;align=(?:left|center|right)\}/g, '');
         var html = sanitizeHtml(marked.parse(bodyMd));
-        render(post, html);
+        render(post, html, layoutMap);
         loadRelated(post, posts);
       })
       .catch(function (e) {
@@ -458,7 +460,7 @@
           '<div class="not-found"><h1>文章不存在</h1><p><a href="index.html">返回首页</a></p></div>';
       });
 
-    function render(post, html) {
+    function render(post, html, layoutMap) {
       document.title = post.title + ' · 时光';
       var cover = '';
       if (post.image) cover = '<img class="post-cover" src="' + esc(assetPath(post.image)) + '" alt="">';
@@ -480,7 +482,7 @@
         (cover ? '<hr class="section-divider">' : '') +
         '<div class="post-body">' + html + '</div>' +
         downloads;
-      decorateArticleImages();
+      decorateArticleImages(layoutMap);
       decorateCode();
       wireDownloadCards();
     }
@@ -630,24 +632,27 @@
       });
     }
 
-    function decorateArticleImages() {
-      document.querySelectorAll('.post-body img').forEach(function (image) {
+    function extractLayoutMap(md) {
+      var map = [], re = /!\[[^\]]*\]\(([^\s)]+)\)\{width=(\d+);align=(left|center|right)\}/g, m;
+      while ((m = re.exec(String(md || '')))) {
+        map.push({ src: m[1], width: Number(m[2]) || 100, align: m[3] || 'center' });
+      }
+      return map;
+    }
+    function decorateArticleImages(layoutMap) {
+      layoutMap = layoutMap || [];
+      document.querySelectorAll('.post-body img').forEach(function (image, index) {
         if (image.parentNode.classList.contains('image-card')) return;
         var frame = document.createElement('span');
         frame.className = 'image-card';
         image.parentNode.insertBefore(frame, image);
         frame.appendChild(image);
-        var next = image.nextSibling;
-        if (next && next.nodeType === 3) {
-          var m = next.textContent.match(/\{width=(\d+);align=(left|center|right)\}/);
-          if (m) {
-            var width = Number(m[1]) || 100, align = m[2] || 'center';
-            frame.style.width = width + '%';
-            frame.style.display = 'block';
-            frame.style.marginLeft = align === 'left' ? '0' : 'auto';
-            frame.style.marginRight = align === 'right' ? '0' : 'auto';
-            next.textContent = next.textContent.replace(/\{width=\d+;align=(?:left|center|right)\}/, '');
-          }
+        var entry = layoutMap[index];
+        if (entry) {
+          frame.style.width = entry.width + '%';
+          frame.style.display = 'block';
+          frame.style.marginLeft = entry.align === 'left' ? '0' : 'auto';
+          frame.style.marginRight = entry.align === 'right' ? '0' : 'auto';
         }
       });
     }
