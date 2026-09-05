@@ -129,9 +129,104 @@
     .post-cover {
       width: 100%;
       border-radius: 16px;
-      margin-bottom: 40px;
+      margin-bottom: 0;
       aspect-ratio: 16/8;
       object-fit: cover;
+    }
+
+    /* SECTION DIVIDERS & DOWNLOADS */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 40px 0;
+    }
+    .post-downloads {
+      margin-top: 0;
+    }
+
+    /* DOWNLOAD BUTTONS（From Uiverse.io by vinodjangid07） */
+    .dl-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .dl-button {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: fit-content;
+      height: 45px;
+      border: 1px solid rgba(255,255,255,0.16);
+      padding: 0px 15px;
+      border-radius: 14px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: transparent;
+      box-shadow: inset 2px 1px 6px rgba(255,255,255,0.06);
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: #fff;
+    }
+    .dl-button .folderContainer {
+      width: 40px;
+      height: fit-content;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      position: relative;
+    }
+    .dl-button .fileBack {
+      z-index: 1;
+      width: 80%;
+      height: auto;
+    }
+    .dl-button .filePage {
+      width: 50%;
+      height: auto;
+      position: absolute;
+      z-index: 2;
+      transition: all 0.3s ease-out;
+    }
+    .dl-button .fileFront {
+      width: 85%;
+      height: auto;
+      position: absolute;
+      z-index: 3;
+      opacity: 0.95;
+      transform-origin: bottom;
+      transition: all 0.3s ease-out;
+    }
+    .dl-button .text {
+      color: inherit;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin: 0;
+    }
+    .dl-button:hover .filePage {
+      transform: translateY(-5px);
+    }
+    .dl-button:active {
+      transform: scale(0.95);
+    }
+    .dl-button:hover .fileFront {
+      transform: rotateX(30deg);
+    }
+    .dl-card {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .dl-note {
+      margin: 0;
+      font-size: 12px;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.3px;
+      padding-left: 2px;
     }
 
     /* MARKDOWN BODY */
@@ -245,6 +340,48 @@
     }
     .related-empty { font-size: 14px; color: var(--muted); }
 
+    /* LOADER（From Uiverse.io by satyamchaudharydev） */
+    .loader-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 0;
+    }
+    .loader-wrap--tight { padding: 24px 0; }
+    .spinner {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      margin-left: -75px;
+    }
+    .spinner span {
+      position: absolute;
+      top: 50%;
+      left: var(--left);
+      width: 35px;
+      height: 7px;
+      background: #ffffff;
+      animation: dominos 1s ease infinite;
+      box-shadow: 2px 2px 3px 0px black;
+    }
+    .spinner span:nth-child(1) { --left: 80px; animation-delay: 0.125s; }
+    .spinner span:nth-child(2) { --left: 70px; animation-delay: 0.3s; }
+    .spinner span:nth-child(3) { left: 60px; animation-delay: 0.425s; }
+    .spinner span:nth-child(4) { animation-delay: 0.54s; left: 50px; }
+    .spinner span:nth-child(5) { animation-delay: 0.665s; left: 40px; }
+    .spinner span:nth-child(6) { animation-delay: 0.79s; left: 30px; }
+    .spinner span:nth-child(7) { animation-delay: 0.915s; left: 20px; }
+    .spinner span:nth-child(8) { left: 10px; }
+    @keyframes dominos {
+      50% { opacity: 0.7; }
+      75% { -webkit-transform: rotate(90deg); transform: rotate(90deg); }
+      80% { opacity: 1; }
+    }
+
     .footer {
       border-top: 1px solid var(--border);
       padding: 32px var(--px);
@@ -282,10 +419,18 @@
   <main class="wrap" id="app">
     <a href="index.html" class="back-home">← 返回首页</a>
     <div class="layout" id="layout">
-      <div id="content"><p class="not-found">加载中…</p></div>
+      <div id="content">
+        <div class="loader-wrap">
+          <div class="spinner"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+      </div>
       <aside class="related" id="related">
         <div class="related-title">相关文章</div>
-        <div id="related-list" class="related-list"><p class="related-empty">加载中…</p></div>
+        <div id="related-list" class="related-list">
+          <div class="loader-wrap loader-wrap--tight">
+            <div class="spinner"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
+        </div>
       </aside>
     </div>
   </main>
@@ -301,7 +446,8 @@
         var posts = data.posts || [];
         var post = posts.find(function (p) { return p.slug === slug; });
         if (!post) throw new Error('notfound');
-        var html = sanitizeHtml(marked.parse(post.body || ''));
+        var bodyMd = stripBodyDownloadLines(post.body || '', downloadEntries(post.downloads, post.body));
+        var html = sanitizeHtml(marked.parse(bodyMd));
         render(post, html);
         loadRelated(post, posts);
       })
@@ -316,6 +462,14 @@
       document.title = post.title + ' · 时光';
       var cover = '';
       if (post.image) cover = '<img class="post-cover" src="' + esc(assetPath(post.image)) + '" alt="">';
+      var downloads = '';
+      var downloadHtml = renderDownloads(post.downloads, post.body);
+      if (downloadHtml) {
+        downloads = '<hr class="section-divider">' +
+          '<div class="post-downloads">' +
+            downloadHtml +
+          '</div>';
+      }
       document.getElementById('content').innerHTML =
         '<header class="post-head">' +
           '<span class="post-tag">' + esc(post.category) + '</span>' +
@@ -323,9 +477,113 @@
           '<div class="post-meta">时光 · ' + esc(fmt(post.published_at)) + '</div>' +
         '</header>' +
         cover +
-        '<div class="post-body">' + html + '</div>';
+        (cover ? '<hr class="section-divider">' : '') +
+        '<div class="post-body">' + html + '</div>' +
+        downloads;
       decorateArticleImages();
       decorateCode();
+      wireDownloadCards();
+    }
+
+    function downloadLabelMap(text) {
+      var map = {}, match, re = /\[([^\]]+)\]\(([^)\s]+)\)/g;
+      while ((match = re.exec(String(text || '')))) { if (map[match[2]] === undefined) map[match[2]] = match[1]; }
+      return map;
+    }
+    function downloadEntries(md, body) {
+      var labels = downloadLabelMap(md);
+      var bodyLabels = downloadLabelMap(body);
+      var text = (md || '') + '\n' + (body || '');
+      var entries = [], last = null, seen = {}, lines = String(text).split(/\r?\n/);
+      for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].trim();
+        var codeMatch = line.match(/提取码\s*[:：]\s*([^\s]+)/);
+        var urlMatch = line.match(/(https?:\/\/[^\s,。，；;]+)/);
+        if (urlMatch) {
+          var url = urlMatch[1].replace(/[。.,，;；+\])]+$/, '');
+          if (!seen[url]) { seen[url] = true; last = { url: url, code: '' }; entries.push(last); }
+          if (codeMatch) last.code = codeMatch[1];
+        } else if (codeMatch && last) {
+          last.code = codeMatch[1];
+        }
+      }
+      return entries.map(function (e) {
+        e.label = labels[e.url] || bodyLabels[e.url] || '';
+        return e;
+      });
+    }
+    function stripBodyDownloadLines(text, entries) {
+      var urls = entries.map(function (e) { return e.url; });
+      var lines = String(text || '').split(/\r?\n/), out = [];
+      for (var i = 0; i < lines.length; i++) {
+        var line = lines[i], urlMatch = line.match(/(https?:\/\/[^\s,。，；;]+)/);
+        var hit = urlMatch && urls.indexOf(urlMatch[1].replace(/[。.,，;；+\])]+$/, '')) !== -1;
+        if (hit) {
+          if (i + 1 < lines.length && /提取码\s*[:：]/.test(lines[i + 1])) i++;
+          continue;
+        }
+        out.push(line);
+      }
+      return out.join('\n').replace(/\n{3,}/g, '\n\n');
+    }
+    function domainLabel(url) {
+      try {
+        var host = new URL(url).hostname;
+        if (host.indexOf('quark') !== -1) return '夸克网盘';
+        if (host.indexOf('baidu') !== -1) return '百度网盘';
+        if (host.indexOf('aliyun') !== -1) return '阿里云盘';
+        if (host.indexOf('123pan') !== -1) return '123云盘';
+        if (host.indexOf('lanzou') !== -1 || host.indexOf('lanpw') !== -1) return '蓝奏云';
+        if (host.indexOf('weibo') !== -1) return '微博';
+        if (host.indexOf('qq.com') !== -1 || host.indexOf('tencent') !== -1) return '腾讯微云';
+        if (host.indexOf('onedrive') !== -1 || host.indexOf('1drv') !== -1) return 'OneDrive';
+        if (host.indexOf('xunlei') !== -1) return '迅雷云盘';
+        return host;
+      } catch (e) { return '下载链接'; }
+    }
+    function renderDownloads(md, body) {
+      var entries = downloadEntries(md, body);
+      if (!entries.length) return '';
+      return '<div class="dl-grid">' + entries.map(function (e, i) {
+        var note = (e.label || domainLabel(e.url)) + (e.code ? ' · 提取码：' + e.code : '');
+        return '<div class="dl-card">' +
+          '<button type="button" class="dl-button" data-url="' + esc(e.url) + '">' +
+            '<span class="folderContainer">' +
+              '<svg class="fileBack" width="146" height="113" viewBox="0 0 146 113" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+                '<path d="M0 4C0 1.79086 1.79086 0 4 0H50.3802C51.8285 0 53.2056 0.627965 54.1553 1.72142L64.3303 13.4371C65.2799 14.5306 66.657 15.1585 68.1053 15.1585H141.509C143.718 15.1585 145.509 16.9494 145.509 19.1585V109C145.509 111.209 143.718 113 141.509 113H3.99999C1.79085 113 0 111.209 0 109V4Z" fill="url(#dlback' + i + ')"></path>' +
+                '<defs><linearGradient id="dlback' + i + '" x1="0" y1="0" x2="72.93" y2="95.4804" gradientUnits="userSpaceOnUse"><stop stop-color="#FFD34D"></stop><stop offset="1" stop-color="#E0A519"></stop></linearGradient></defs>' +
+              '</svg>' +
+              '<svg class="filePage" width="88" height="99" viewBox="0 0 88 99" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+                '<rect width="88" height="99" fill="url(#dlpage' + i + ')"></rect>' +
+                '<defs><linearGradient id="dlpage' + i + '" x1="0" y1="0" x2="81" y2="160.5" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFFFF"></stop><stop offset="1" stop-color="#E6E6E6"></stop></linearGradient></defs>' +
+              '</svg>' +
+              '<svg class="fileFront" width="160" height="79" viewBox="0 0 160 79" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+                '<path d="M0.29306 12.2478C0.133905 9.38186 2.41499 6.97059 5.28537 6.97059H30.419H58.1902C59.5751 6.97059 60.9288 6.55982 62.0802 5.79025L68.977 1.18034C70.1283 0.410771 71.482 0 72.8669 0H77H155.462C157.87 0 159.733 2.1129 159.43 4.50232L150.443 75.5023C150.19 77.5013 148.489 79 146.474 79H7.78403C5.66106 79 3.9079 77.3415 3.79019 75.2218L0.29306 12.2478Z" fill="url(#dlfront' + i + ')"></path>' +
+                '<defs><linearGradient id="dlfront' + i + '" x1="38.7619" y1="8.71323" x2="66.9106" y2="82.8317" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE28A"></stop><stop offset="1" stop-color="#CA9719"></stop></linearGradient></defs>' +
+              '</svg>' +
+            '</span>' +
+            '<p class="text">复制下载链接</p>' +
+          '</button>' +
+          '<p class="dl-note">' + esc(note) + '</p>' +
+        '</div>';
+      }).join('') + '</div>';
+    }
+
+    function wireDownloadCards() {
+      document.querySelectorAll('.dl-button').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var url = btn.getAttribute('data-url');
+          if (!url) return;
+          navigator.clipboard.writeText(url).then(function () {
+            var hint = btn.querySelector('.text');
+            var old = hint ? hint.textContent : '';
+            if (hint) hint.textContent = '已复制';
+            setTimeout(function () {
+              if (hint) hint.textContent = old;
+            }, 1300);
+          });
+        });
+      });
     }
 
     function fmt(d) {
@@ -379,6 +637,18 @@
         frame.className = 'image-card';
         image.parentNode.insertBefore(frame, image);
         frame.appendChild(image);
+        var next = image.nextSibling;
+        if (next && next.nodeType === 3) {
+          var m = next.textContent.match(/\{width=(\d+);align=(left|center|right)\}/);
+          if (m) {
+            var width = Number(m[1]) || 100, align = m[2] || 'center';
+            frame.style.width = width + '%';
+            frame.style.display = 'block';
+            frame.style.marginLeft = align === 'left' ? '0' : 'auto';
+            frame.style.marginRight = align === 'right' ? '0' : 'auto';
+            next.textContent = next.textContent.replace(/\{width=\d+;align=(?:left|center|right)\}/, '');
+          }
+        }
       });
     }
 

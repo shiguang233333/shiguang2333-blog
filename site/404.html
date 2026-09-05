@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>页面不存在 · 时光</title>
+  <link rel="stylesheet" href="assets/fonts/fonts.css">
+  <style>
+    :root {
+      --bg: #000000;
+      --fg: #ffffff;
+      --muted: #999999;
+      --border: rgba(255,255,255,0.1);
+      --font: "Geist", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      --nav-h: 64px;
+      --px: 24px;
+      --max-w: 760px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .nav {
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--px);
+      max-width: var(--max-w);
+      margin: 0 auto;
+      width: 100%;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-left { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+    .nav-left svg { width: 20px; height: 20px; }
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .nav-link { color: var(--muted); font-size: 14px; transition: color .2s; }
+    .nav-link:hover { color: var(--fg); }
+
+    .wrap {
+      flex: 1;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 48px var(--px) 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    /* From Uiverse.io by preet_7613 */
+    .my-custom-face-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 380px;
+      background: transparent;
+      color: #ffffff;
+    }
+
+    .my-custom-face-container .face {
+      width: 200px;
+    }
+
+    .my-custom-face-container .face__eyes,
+    .my-custom-face-container .face__eye-lid,
+    .my-custom-face-container .face__mouth-left,
+    .my-custom-face-container .face__mouth-right,
+    .my-custom-face-container .face__nose,
+    .my-custom-face-container .face__pupil {
+      animation: eyes 1s 0.3s forwards;
+    }
+
+    .my-custom-face-container .face__eye-lid,
+    .my-custom-face-container .face__pupil {
+      animation-duration: 4s;
+      animation-delay: 1.3s;
+      animation-iteration-count: infinite;
+    }
+
+    .my-custom-face-container .face__eye-lid { animation-name: eye-lid; }
+    .my-custom-face-container .face__mouth-left { animation-name: mouth-left; }
+    .my-custom-face-container .face__mouth-right { animation-name: mouth-right; }
+    .my-custom-face-container .face__nose { animation-name: nose; }
+    .my-custom-face-container .face__pupil { animation-name: pupil; }
+
+    @keyframes eye-lid {
+      0%, 40%, 45%, 100% { transform: translateY(0); }
+      42.5% { transform: translateY(17.5px); }
+    }
+
+    @keyframes eyes {
+      from { transform: translateY(112.5px); }
+      to { transform: translateY(15px); }
+    }
+
+    @keyframes pupil {
+      0%, 37.5%, 40%, 45%, 87.5%, 100% {
+        stroke-dashoffset: 0;
+        transform: translate(0, 0);
+      }
+      12.5%, 25%, 62.5%, 75% {
+        transform: translate(-35px, 0);
+      }
+      42.5% {
+        stroke-dashoffset: 35;
+        transform: translate(0, 17.5px);
+      }
+    }
+
+    @keyframes mouth-left {
+      from, 50% { stroke-dashoffset: -102; }
+      to { stroke-dashoffset: 0; }
+    }
+
+    @keyframes mouth-right {
+      from, 50% { stroke-dashoffset: 102; }
+      to { stroke-dashoffset: 0; }
+    }
+
+    @keyframes nose {
+      from { transform: translate(0, 0); }
+      to { transform: translate(0, 22.5px); }
+    }
+    /* End Uiverse */
+
+    .code {
+      font-size: 88px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 4px;
+      margin-top: -12px;
+      background: linear-gradient(135deg, #7b4397, #dc2430);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+    .msg {
+      margin-top: 16px;
+      font-size: 18px;
+      color: var(--fg);
+    }
+    .sub {
+      margin-top: 8px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .btn-home {
+      display: inline-block;
+      margin-top: 32px;
+      padding: 12px 28px;
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      font-size: 14px;
+      color: var(--fg);
+      transition: all .25s;
+    }
+    .btn-home:hover {
+      background: linear-gradient(135deg, #7b4397, #dc2430);
+      border-color: transparent;
+      transform: translateY(-1px);
+    }
+
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 32px var(--px);
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 560px) {
+      :root { --px: 16px; }
+      .my-custom-face-container { height: 320px; }
+      .my-custom-face-container .face { width: 160px; }
+      .code { font-size: 72px; }
+    }
+  </style>
+</head><body>
+  <nav class="nav">
+    <a href="index.html" class="nav-left">
+      <svg viewBox="0 0 24 24" fill="none"><defs><linearGradient id="logo-g" x1="0" y1="0" x2="24" y2="24"><stop offset="0%" stop-color="#7b4397"></stop><stop offset="100%" stop-color="#dc2430"></stop></linearGradient></defs><rect x="2" y="5" width="12" height="16" rx="2" stroke="currentColor" stroke-width="1.5"></rect><rect x="5" y="3" width="12" height="16" rx="2" stroke="currentColor" stroke-width="1.5" opacity=".6"></rect><rect x="8" y="1" width="12" height="16" rx="2" stroke="url(#logo-g)" stroke-width="1.5"></rect></svg>
+      时光
+    </a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">首页</a>
+      <a href="tags.html" class="nav-link">标签</a>
+      <a href="links.html" class="nav-link">友链</a>
+      <a href="about.html" class="nav-link">关于</a>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <!-- From Uiverse.io by preet_7613 -->
+    <main class="my-custom-face-container">
+      <svg class="face" viewBox="0 0 320 380">
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="25">
+          <g class="face__eyes" transform="translate(0,112.5)">
+            <g transform="translate(15,0)">
+              <polyline class="face__eye-lid" points="37,0 0,120 75,120"></polyline>
+              <polyline class="face__pupil" points="55,120 55,155" stroke-dasharray="35 35"></polyline>
+            </g>
+            <g transform="translate(230,0)">
+              <polyline class="face__eye-lid" points="37,0 0,120 75,120"></polyline>
+              <polyline class="face__pupil" points="55,120 55,155" stroke-dasharray="35 35"></polyline>
+            </g>
+          </g>
+          <rect class="face__nose" x="132.5" y="112.5" width="55" height="155" rx="4" ry="4"></rect>
+          <g transform="translate(65,334)" stroke-dasharray="102 102">
+            <path class="face__mouth-left" d="M 0 30 C 0 30 40 0 95 0"></path>
+            <path class="face__mouth-right" d="M 95 0 C 150 0 190 30 190 30"></path>
+          </g>
+        </g>
+      </svg>
+    </main>
+    
+    <p class="msg">页面不存在</p>
+    <p class="sub">你要找的东西可能被移动了、删除了，或者从未存在过。</p>
+    <a class="btn-home" href="index.html">回到首页</a>
+  </div>
+
+  <footer class="footer">© 2026 时光 · 用爱发电</footer>
+
+  <script>
+    // 当 404 页面在嵌套路径下加载（如 /post/xxx 或任意多级路径）时，
+    // 页面内的相对导航链接（首页/标签/友链/关于/回到首页）需要补一层 ../ 才能回到站点根目录，
+    // 否则会在当前目录下继续 404。仅在 /post/<slug>/… 这类已知嵌套场景下修正，
+    // 不影响 GitHub Pages 等根路径或单级路径部署。
+    document.addEventListener('click', function (e) {
+      var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+      if (!a) return;
+      var segs = location.pathname.split('/').filter(Boolean);
+      if (!(segs.length > 1 && segs[0] === 'post')) return;
+      var href = a.getAttribute('href') || '';
+      if (/^(index|post|tags|links|about)\.html/i.test(href) && href.indexOf('../') !== 0) {
+        a.setAttribute('href', '../' + href);
+      }
+    });
+  </script>
+</body></html>

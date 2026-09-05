@@ -313,7 +313,7 @@
     .hero {
       max-width: var(--max-w);
       margin: 0 auto;
-      padding: 80px var(--px) 0;
+      padding: 40px var(--px) 0;
     }
 
     .hero h1 {
@@ -335,7 +335,7 @@
 
     /* —— 毛玻璃标语卡片（源：Uiverse by solid-metal；深色主题，全宽）—— */
     .hero-card-wrap {
-      margin-bottom: 48px;
+      margin-bottom: 32px;
       width: 100%;
     }
 
@@ -357,14 +357,14 @@
       position: absolute;
       height: 150px;
       width: 150px;
-      left: 18%;
+      right: 12%;
       top: 25%;
-      transform: translateX(-100%);
-      background-image: linear-gradient(135deg, #7b4397, #dc2430);
+      transform: translateX(100%);
+      background-image: radial-gradient(circle at 30% 30%, #6a6a6a 0%, #3a3a3a 45%, #000000 100%);
       border-radius: 50%;
       z-index: -1;
       border: 2px solid rgba(255,255,255,0.15);
-      box-shadow: inset 10px 0px 20px rgba(255,255,255,0.08);
+      box-shadow: inset 10px 0px 20px rgba(255,255,255,0.1);
       animation: heroOrb 28s ease-in-out infinite;
     }
 
@@ -373,14 +373,14 @@
       position: absolute;
       height: 80px;
       width: 80px;
-      left: 14%;
+      right: 16%;
       bottom: 25%;
-      transform: translateX(-100%);
-      background-image: linear-gradient(90deg, #dc2430, #7b4397);
+      transform: translateX(100%);
+      background-image: radial-gradient(circle at 30% 30%, #6a6a6a 0%, #3a3a3a 45%, #000000 100%);
       border-radius: 50%;
       z-index: -1;
       border: 2px solid rgba(255,255,255,0.15);
-      box-shadow: inset 10px 0px 20px rgba(255,255,255,0.08);
+      box-shadow: inset 10px 0px 20px rgba(255,255,255,0.1);
     }
 
     .hero-card-wrap .card {
@@ -415,7 +415,7 @@
     .hero-card-wrap .desc {
       padding: 8px 0 0;
       color: #c8c8c8;
-      font-size: 15px;
+      font-size: clamp(13px, 3.5vw, 15px);
       line-height: 1.6;
       max-width: 600px;
     }
@@ -429,8 +429,12 @@
     .filters {
       display: flex;
       gap: 10px;
-      margin-bottom: 48px;
+      margin-top: 28px;
       flex-wrap: wrap;
+    }
+
+    .hero-card-wrap .filters {
+      margin-bottom: 0;
     }
 
     /* 文章分类按钮 — 选中堆叠阴影（源：Uiverse by ZacharyCrespin，hover→active，选中/未选中反转） */
@@ -1264,7 +1268,8 @@
       .music-card .card { max-width: 44px; padding: 0; justify-content: center; }
       .music-card .img { margin-left: 0; }
       .music-card .textBox { display: none; }
-      .hero-card-wrap .innerText { font-size: 28px; }
+      .hero-card-wrap .card { min-height: 160px; padding: 24px; }
+      .hero-card-wrap .innerText { font-size: clamp(20px, 6.5vw, 34px); white-space: nowrap; }
       .hero-card-wrap .container::after { height: 120px; width: 120px; }
       .hero-card-wrap .container::before { height: 60px; width: 60px; }
       .updates-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1383,11 +1388,11 @@
         <div class="card">
           <p class="innerText">记录、思考、整理、完善</p>
           <p class="desc">把博客当朋友圈发，分享技术，归档资源（完全随机更新）</p>
+          <div class="filters" data-od-id="blog-filters" id="blog-filters"></div>
         </div>
       </div>
     </div>
     <h1 style="display:none">记录、思考、整理、完善</h1>
-    <div class="filters" data-od-id="blog-filters" id="blog-filters"></div>
   </section>
 
   <!-- UPDATES -->
@@ -1492,7 +1497,7 @@
   <script>
     var state = { posts: [], filter: '全部' };
 
-    var CATEGORIES = ['思考', '技术', '设计', '教程', '灵感', '生活随笔', '资源'];
+    var CATEGORIES = ['思考', '技术', '设计', '教程', '灵感', '随笔', '资源'];
 
     function esc(s) {
       return String(s == null ? '' : s).replace(/[&<>"']/g, function (m) {
