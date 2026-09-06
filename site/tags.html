@@ -144,14 +144,12 @@
       border-radius: 100px;
       margin-right: 4px;
     }
-    .post-views { font-family: "JetBrains Mono", monospace; white-space: nowrap; margin-left: auto; }
     .empty { color: var(--muted); text-align: center; padding: 40px 0; }
 
     @media (max-width: 560px) {
       :root { --px: 16px; }
       .post-item { flex-wrap: wrap; }
       .post-thumb { width: 100%; aspect-ratio: 16/9; }
-      .post-views { margin-left: 0; width: 100%; text-align: right; }
       .post-preview { -webkit-line-clamp: 2; }
     }
   </style>
@@ -180,7 +178,6 @@
         <span class="lbl">排序依据</span>
         <button class="sort-btn" data-sort="time">时间</button>
         <button class="sort-btn" data-sort="name">名称</button>
-        <button class="sort-btn" data-sort="views">浏览量</button>
         <span class="lbl" style="margin-left:8px">顺序</span>
         <button class="sort-btn" data-order="desc">倒序</button>
         <button class="sort-btn" data-order="asc">正序</button>
@@ -201,7 +198,7 @@
         allPosts: [],
         allTags: [],
         selected: [],   // 选中的标签名
-        sort: 'time',    // time | name | views
+        sort: 'time',    // time | name
         order: 'desc'    // asc | desc
       };
 
@@ -292,8 +289,6 @@
           var r;
           if (state.sort === 'name') {
             r = String(a.title).localeCompare(String(b.title), 'zh-Hans-CN');
-          } else if (state.sort === 'views') {
-            r = (a.views || 0) - (b.views || 0);
           } else {
             var at = a.published_at || a.created_at;
             var bt = b.published_at || b.created_at;
@@ -318,10 +313,9 @@
                      '<div class="post-preview">' + esc(preview) + '</div>' +
                      '<div class="post-meta">' +
                        '<span class="chip-list">' + tags.map(function (t) { return '<span>#' + esc(t) + '</span>'; }).join('') + '</span>' +
-                       '<span>' + esc(fmtDate(p.published_at)) + '</span>' +
-                     '</div>' +
+'<span>' + esc(fmtDate(p.published_at)) + '</span>' +
+                      '</div>' +
                    '</div>' +
-                   '<div class="post-views">' + (p.views || 0) + ' 次浏览</div>' +
                  '</a>';
         }).join('');
       }
