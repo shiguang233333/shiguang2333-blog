@@ -1,6 +1,22 @@
 {
   "posts": [
     {
+      "id": 23,
+      "title": "积木拖动式UI搭建：M3E Canvas",
+      "slug": "积木拖动式ui搭建m3e-canvas",
+      "body": "视频预览：\n\n<video controls src=\"https://raw.githubusercontent.com/lnkiai/m3e-canvas/refs/heads/main/docs/story.mp4\">{width=83;align=left}</video>\n\n\n导出提示词/JSON之后交给任意编程Agent即可（Opencode、Codex、Claude Code等）\n\n\n源Github链接：https://github.com/lnkiai/m3e-canvas\n\n在线Demo链接：https://lnkiai.github.io/m3e-canvas/",
+      "summary": "近乎傻瓜式UI搭建，拖动并且放置即可完成UI设计，导出为AI提示词或JSON格式",
+      "category": "设计",
+      "tags": "Github,开源项目,UI,Ai",
+      "status": "published",
+      "image": "assets/images/image-1788755110433-311772447.webp",
+      "downloads": "",
+      "views": 0,
+      "published_at": "2026-09-07 12:53:33",
+      "created_at": "2026-09-07 12:33:53",
+      "updated_at": "2026-09-07 14:54:43"
+    },
+    {
       "id": 21,
       "title": "Parallels Desktop虚拟机",
       "slug": "parallels-desktop虚拟机",
@@ -20,7 +36,7 @@
       "id": 20,
       "title": "Adobe2025全家桶",
       "slug": "adobe2025全家桶",
-      "body": "\n![图片说明](assets/images/image-1788590817850-872623328.webp){width=89;align=center}",
+      "body": "\n![图片说明](assets/images/image-1788590817850-872623328.webp){width=39;align=left}",
       "summary": "Windows版本，带补丁",
       "category": "资源",
       "tags": "Adobe,安装包",
@@ -30,7 +46,7 @@
       "views": 0,
       "published_at": "2026-09-03 19:39:33",
       "created_at": "2026-09-03 19:39:33",
-      "updated_at": "2026-09-05 14:56:42"
+      "updated_at": "2026-09-07 14:57:33"
     },
     {
       "id": 19,

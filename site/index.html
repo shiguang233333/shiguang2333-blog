@@ -22,7 +22,7 @@
       --font-serif: "EB Garamond", Georgia, serif;
       --font-mono: "JetBrains Mono", "SF Mono", monospace;
       --max-w: 1200px;
-      --px: 120px;
+      --px: 40px;
       --nav-h: 64px;
     }
 
@@ -311,8 +311,6 @@
 
     /* HERO */
     .hero {
-      max-width: var(--max-w);
-      margin: 0 auto;
       padding: 40px var(--px) 0;
     }
 
@@ -502,8 +500,6 @@
 
     /* UPDATES */
     .updates {
-      max-width: var(--max-w);
-      margin: 0 auto;
       padding: 0 var(--px) 80px;
     }
 
@@ -540,6 +536,7 @@
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 2px;
+      align-items: center;
     }
     .view-toggle button {
       display: flex;
@@ -553,6 +550,7 @@
       color: var(--muted);
       cursor: pointer;
       transition: background 0.2s, color 0.2s;
+      position: relative;
     }
     .view-toggle button:hover { color: var(--fg); }
     .view-toggle button.active {
@@ -560,14 +558,54 @@
       color: var(--fg);
     }
 
+    .grid-popover {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      padding-left: 4px;
+      border-left: 1px solid var(--border);
+      margin-left: 2px;
+    }
+    .grid-popover.open { display: flex; }
+    .grid-popover-label {
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .grid-popover-options {
+      display: flex;
+      gap: 2px;
+    }
+    .grid-popover-options button {
+      width: 24px;
+      height: 24px;
+      border: none;
+      border-radius: 5px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .grid-popover-options button:hover { color: var(--fg); background: var(--surface-3); }
+    .grid-popover-options button.active {
+      background: var(--surface-4);
+      color: var(--fg);
+    }
+
     .updates-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 20px;
     }
-    .updates-grid.single-col {
-      grid-template-columns: 1fr;
-    }
+    .updates-grid.col-1 { grid-template-columns: 1fr; }
+    .updates-grid.col-2 { grid-template-columns: repeat(2, 1fr); }
+    .updates-grid.col-3 { grid-template-columns: repeat(3, 1fr); }
+    .updates-grid.col-4 { grid-template-columns: repeat(4, 1fr); }
 
     /* —— 文章卡片（源：Uiverse by kennyotsu 鼠标悬停三维倾斜卡片；作用域收拢到 .update-tilt；未悬停灰底、悬停灰白渐变边框，不改变数据流）—— */
     .update-tilt {
@@ -809,8 +847,6 @@
 
     /* CTA */
     .cta {
-      max-width: var(--max-w);
-      margin: 0 auto;
       padding: 0 var(--px) 56px;
     }
 
@@ -948,8 +984,7 @@
     }
 
     .footer-inner {
-      max-width: var(--max-w);
-      margin: 0 auto;
+      padding: 0 var(--px);
     }
 
     .footer-grid {
@@ -1258,12 +1293,11 @@
     }
 
     /* RESPONSIVE */
-    @media (max-width: 1024px) {
-      :root { --px: 40px; }
+@media (max-width: 1024px) {
+      :root { --px: 24px; }
     }
-
     @media (max-width: 640px) {
-      :root { --px: 20px; }
+      :root { --px: 16px; }
       .nav-links { display: none; }
       .music-card .card { max-width: 44px; padding: 0; justify-content: center; }
       .music-card .img { margin-left: 0; }
@@ -1273,6 +1307,8 @@
       .hero-card-wrap .container::after { height: 120px; width: 120px; }
       .hero-card-wrap .container::before { height: 60px; width: 60px; }
       .updates-grid { grid-template-columns: repeat(2, 1fr); }
+      .updates-grid.col-3 { grid-template-columns: repeat(2, 1fr); }
+      .updates-grid.col-4 { grid-template-columns: repeat(2, 1fr); }
       .footer-grid { grid-template-columns: 1fr; }
       .footer-left { flex-direction: column; gap: 32px; }
       .footer-message-col { max-width: 100%; }
@@ -1401,12 +1437,18 @@
       <div class="section-title-group">
         <h2 class="section-title" id="updates-title">全部文章</h2>
         <div class="view-toggle" id="view-toggle">
-          <button id="btn-single" title="单列">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="4" x2="13" y2="4"/><line x1="3" y1="8" x2="13" y2="8"/><line x1="3" y1="12" x2="13" y2="12"/></svg>
-          </button>
-          <button id="btn-double" title="双列">
+          <button id="btn-grid" title="卡片视图">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
           </button>
+          <div class="grid-popover" id="grid-popover">
+            <span class="grid-popover-label">每行</span>
+            <div class="grid-popover-options" id="grid-options">
+              <button data-cols="1">1</button>
+              <button data-cols="2">2</button>
+              <button data-cols="3">3</button>
+              <button data-cols="4">4</button>
+            </div>
+          </div>
         </div>
       </div>
       <a class="section-link" id="updates-link">查看全部 →</a>
@@ -1580,24 +1622,37 @@
     // View toggle
     (function () {
       var grid = document.getElementById('updates-grid');
-      var btnSingle = document.getElementById('btn-single');
-      var btnDouble = document.getElementById('btn-double');
-      var saved = localStorage.getItem('viewMode') || 'double';
-      function apply(mode) {
-        if (mode === 'single') {
-          grid.classList.add('single-col');
-          btnSingle.classList.add('active');
-          btnDouble.classList.remove('active');
-        } else {
-          grid.classList.remove('single-col');
-          btnDouble.classList.add('active');
-          btnSingle.classList.remove('active');
-        }
-        localStorage.setItem('viewMode', mode);
+      var btnGrid = document.getElementById('btn-grid');
+      var popover = document.getElementById('grid-popover');
+      var options = document.getElementById('grid-options');
+      var savedCols = parseInt(localStorage.getItem('gridCols')) || 4;
+
+      function applyCols(cols) {
+        grid.className = 'updates-grid col-' + cols;
+        options.querySelectorAll('button').forEach(function (b) {
+          b.classList.toggle('active', parseInt(b.dataset.cols) === cols);
+        });
+        localStorage.setItem('gridCols', cols);
       }
-      btnSingle.addEventListener('click', function () { apply('single'); });
-      btnDouble.addEventListener('click', function () { apply('double'); });
-      apply(saved);
+
+      btnGrid.addEventListener('click', function () {
+        popover.classList.toggle('open');
+      });
+
+      options.addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-cols]');
+        if (!btn) return;
+        savedCols = parseInt(btn.dataset.cols);
+        applyCols(savedCols);
+      });
+
+      document.addEventListener('click', function (e) {
+        if (!popover.contains(e.target) && e.target !== btnGrid) {
+          popover.classList.remove('open');
+        }
+      });
+
+      applyCols(savedCols);
     })();
 
     // 3D 倾斜卡片：透明 .tilt-canvas 覆盖层(z-index:200)会挡住 <a> 链接的点击，
