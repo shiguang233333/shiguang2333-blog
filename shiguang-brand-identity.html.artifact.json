@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "shiguang-brand-identity.html",
+  "entry": "shiguang-brand-identity.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-04T11:34:11.794Z",
+  "updatedAt": "2026-09-04T11:34:11.794Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

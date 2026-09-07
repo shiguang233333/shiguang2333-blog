@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>时光 · 品牌识别系统</title>
+<style>
+  @font-face { font-family: 'EB Garamond'; font-style: normal; font-weight: 400; src: url('site/assets/fonts/fonts.gstatic.com/georgiavfb.gstatic.com/s/ebgaramond/v28/SlGDmQSNjdsmc35JDF1K5E55YMjF_7DPuGi-6_RUA4V-e6yHgQ.woff2') format('woff2'); }
+  @font-face { font-family: 'Geist'; font-style: normal; font-weight: 400; src: url('site/assets/fonts/app.framerstatic.com/Geist-Regular.woff2') format('woff2'); }
+  @font-face { font-family: 'Geist'; font-style: normal; font-weight: 600; src: url('site/assets/fonts/app.framerstatic.com/Geist-SemiBold.woff2') format('woff2'); }
+  @font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 500; src: url('site/assets/fonts/fonts.gstatic.com/jetbrainsmono.gstatic.com/s/jetbrainsmono/v18/tDbY2o-flEEny0FPP0188fB4v_LjkGQhag.woff2') format('woff2'); }
+
+  :root {
+    --bg: #000000;
+    --surface: #141414;
+    --surface-2: #1d1d1d;
+    --surface-3: #242424;
+    --surface-4: #303030;
+    --fg: #ffffff;
+    --muted: #999999;
+    --border: rgba(255,255,255,0.1);
+    --purple: #7b4397;
+    --red: #dc2430;
+    --gradient: linear-gradient(135deg, var(--purple), var(--red));
+    --font-display: 'EB Garamond', Georgia, serif;
+    --font-body: 'Geist', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--font-body); line-height: 1.6; }
+
+  .page { max-width: 1100px; margin: 0 auto; padding: 60px 40px 120px; }
+
+  /* Header */
+  .header { text-align: center; margin-bottom: 80px; }
+  .header-label { font-family: var(--font-mono); font-size: 12px; color: var(--muted); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px; }
+  .header h1 { font-family: var(--font-display); font-size: 64px; font-weight: 400; margin-bottom: 12px; }
+  .header h1 span { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .header p { font-size: 16px; color: var(--muted); max-width: 560px; margin: 0 auto; }
+
+  /* Section */
+  .section { margin-bottom: 72px; }
+  .section-num { font-family: var(--font-mono); font-size: 11px; color: var(--purple); letter-spacing: 2px; margin-bottom: 8px; }
+  .section-title { font-size: 28px; font-weight: 600; margin-bottom: 8px; }
+  .section-desc { font-size: 14px; color: var(--muted); margin-bottom: 32px; max-width: 600px; }
+
+  /* Grid */
+  .logo-grid { display: grid; gap: 24px; }
+  .logo-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .logo-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .logo-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+  /* Card */
+  .card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    position: relative;
+    transition: border-color 0.3s;
+  }
+  .card:hover { border-color: rgba(255,255,255,0.25); }
+  .card-label {
+    position: absolute;
+    bottom: 12px;
+    left: 16px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .card-tag {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--purple);
+    background: rgba(123,67,151,0.15);
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+  .card.wide { grid-column: span 2; }
+  .card.dark-bg { background: #000000; }
+  .card.gradient-bg { background: var(--gradient); }
+
+  /* Wordmark styles */
+  .wm-serif { font-family: var(--font-display); font-size: 42px; font-weight: 400; letter-spacing: 4px; }
+  .wm-sans { font-family: var(--font-body); font-size: 36px; font-weight: 600; letter-spacing: 2px; }
+  .wm-mono { font-family: var(--font-mono); font-size: 32px; font-weight: 500; letter-spacing: 1px; }
+  .wm-gradient { font-family: var(--font-display); font-size: 48px; font-weight: 400; letter-spacing: 6px; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  /* Symbol styles */
+  .sym { width: 64px; height: 64px; }
+  .sym svg { width: 100%; height: 100%; }
+
+  /* Color swatches */
+  .swatch-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+  .swatch { border-radius: 12px; overflow: hidden; }
+  .swatch-color { height: 100px; }
+  .swatch-info { padding: 12px; background: var(--surface-2); border: 1px solid var(--border); border-top: 0; border-radius: 0 0 12px 12px; }
+  .swatch-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .swatch-val { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+
+  /* Gradient bar */
+  .gradient-bar { height: 80px; border-radius: 16px; background: var(--gradient); margin-bottom: 16px; }
+
+  /* Typography sample */
+  .type-sample { padding: 24px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 16px; }
+  .type-label { font-family: var(--font-mono); font-size: 11px; color: var(--purple); margin-bottom: 8px; }
+  .type-specimen { margin-bottom: 4px; }
+  .type-meta { font-size: 12px; color: var(--muted); }
+
+  /* Rules */
+  .rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .rule-card { padding: 24px; border-radius: 12px; }
+  .rule-card.do { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); }
+  .rule-card.dont { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); }
+  .rule-card h4 { font-size: 14px; margin-bottom: 12px; }
+  .rule-card.do h4 { color: #22c55e; }
+  .rule-card.dont h4 { color: #ef4444; }
+  .rule-card ul { list-style: none; font-size: 13px; color: var(--muted); }
+  .rule-card li { margin-bottom: 8px; padding-left: 16px; position: relative; }
+  .rule-card li::before { content: ''; position: absolute; left: 0; top: 7px; width: 6px; height: 6px; border-radius: 50%; }
+  .rule-card.do li::before { background: #22c55e; }
+  .rule-card.dont li::before { background: #ef4444; }
+
+  /* Prompt */
+  .prompt-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .prompt-card h4 { font-size: 14px; margin-bottom: 8px; }
+  .prompt-text {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--surface);
+    padding: 12px;
+    border-radius: 8px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* Copy button */
+  .copy-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--surface-4);
+    border: none;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s;
+  }
+  .copy-btn:hover { color: var(--fg); background: var(--surface-3); }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .page { padding: 40px 20px 80px; }
+    .header h1 { font-size: 40px; }
+    .logo-grid.cols-3, .logo-grid.cols-4 { grid-template-columns: 1fr 1fr; }
+    .swatch-grid { grid-template-columns: repeat(3, 1fr); }
+    .rule-grid { grid-template-columns: 1fr; }
+    .card.wide { grid-column: span 1; }
+  }
+  @media (max-width: 480px) {
+    .logo-grid.cols-3, .logo-grid.cols-4, .logo-grid.cols-2 { grid-template-columns: 1fr; }
+    .swatch-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-label">Brand Identity System</div>
+    <h1><span>时光</span></h1>
+    <p>兴趣使然的小站 — 品牌识别系统<br>记录、思考、整理、完善</p>
+  </div>
+
+  <!-- 01 WORDMARKS -->
+  <div class="section">
+    <div class="section-num">01</div>
+    <div class="section-title">字标 Wordmarks</div>
+    <div class="section-desc">四种字体方向，定义"时光"在不同场景下的视觉性格。推荐以 A（衬线）为主字标，C（等宽）用于技术语境。</div>
+    <div class="logo-grid cols-4">
+      <div class="card">
+        <div class="wm-serif">时光</div>
+        <div class="card-tag">推荐主字标</div>
+        <div class="card-label">A · 衬线 Serif</div>
+      </div>
+      <div class="card">
+        <div class="wm-sans">时光</div>
+        <div class="card-label">B · 无衬线 Sans</div>
+      </div>
+      <div class="card">
+        <div class="wm-mono">时光</div>
+        <div class="card-label">C · 等宽 Mono</div>
+      </div>
+      <div class="card">
+        <div class="wm-gradient">时光</div>
+        <div class="card-label">D · 渐变 Gradient</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 SYMBOLS -->
+  <div class="section">
+    <div class="section-num">02</div>
+    <div class="section-title">符号 Symbols</div>
+    <div class="section-desc">抽象图形符号，可独立使用（favicon、App Icon）或与字标组合。推荐 E（沙漏折叠）作为主符号。</div>
+    <div class="logo-grid cols-4">
+      <!-- E: Hourglass fold -->
+      <div class="card">
+        <div class="sym">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 8h32v4l-12 16 12 16v4H16v-4l12-16L16 12V8z" stroke="white" stroke-width="2.5" fill="none"/>
+            <path d="M20 14h24v2L32 32l12 16v2H20v-2l12-16L20 16v-2z" fill="url(#g1)" opacity="0.3"/>
+            <defs><linearGradient id="g1" x1="20" y1="14" x2="44" y2="34"><stop stop-color="#7b4397"/><stop offset="1" stop-color="#dc2430"/></linearGradient></defs>
+          </svg>
+        </div>
+        <div class="card-tag">推荐主符号</div>
+        <div class="card-label">E · 沙漏折叠</div>
+      </div>
+      <!-- F: Clock minimal -->
+      <div class="card">
+        <div class="sym">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="32" cy="32" r="22" stroke="white" stroke-width="2.5"/>
+            <line x1="32" y1="18" x2="32" y2="32" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="32" y1="32" x2="42" y2="38" stroke="url(#g2)" stroke-width="2.5" stroke-linecap="round"/>
+            <defs><linearGradient id="g2" x1="32" y1="32" x2="42" y2="38"><stop stop-color="#7b4397"/><stop offset="1" stop-color="#dc2430"/></linearGradient></defs>
+          </svg>
+        </div>
+        <div class="card-label">F · 极简时钟</div>
+      </div>
+      <!-- G: Pages stack -->
+      <div class="card">
+        <div class="sym">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="14" y="12" width="28" height="36" rx="3" stroke="white" stroke-width="2" fill="none"/>
+            <rect x="20" y="8" width="28" height="36" rx="3" stroke="white" stroke-width="2" fill="none" opacity="0.6"/>
+            <rect x="26" y="4" width="28" height="36" rx="3" stroke="url(#g3)" stroke-width="2" fill="none"/>
+            <line x1="30" y1="14" x2="48" y2="14" stroke="white" stroke-width="1.5" opacity="0.4"/>
+            <line x1="30" y1="20" x2="44" y2="20" stroke="white" stroke-width="1.5" opacity="0.3"/>
+            <line x1="30" y1="26" x2="46" y2="26" stroke="white" stroke-width="1.5" opacity="0.2"/>
+            <defs><linearGradient id="g3" x1="26" y1="4" x2="54" y2="40"><stop stop-color="#7b4397"/><stop offset="1" stop-color="#dc2430"/></linearGradient></defs>
+          </svg>
+        </div>
+        <div class="card-label">G · 知识层叠</div>
+      </div>
+      <!-- H: Infinity flow -->
+      <div class="card">
+        <div class="sym">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M32 32c0-8-6-14-13-14s-13 6-13 13 6 14 13 14c5 0 9-3 13-13 4 10 8 13 13 13 7 0 13-6 13-13s-6-14-13-14c-5 0-9 3-13 13z" stroke="url(#g4)" stroke-width="2.5" fill="none"/>
+            <defs><linearGradient id="g4" x1="6" y1="18" x2="58" y2="46"><stop stop-color="#7b4397"/><stop offset="1" stop-color="#dc2430"/></linearGradient></defs>
+          </svg>
+        </div>
+        <div class="card-label">H · 无限流</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 COMBINATION MARKS -->
+  <div class="section">
+    <div class="section-num">03</div>
+    <div class="section-title">组合标 Combination Marks</div>
+    <div class="section-desc">符号与字标的组合方式。推荐 I（符号左 + 衬线字标）用于导航栏和正式场景。</div>
+    <div class="logo-grid cols-3">
+      <!-- I: Symbol left + serif -->
+      <div class="card" style="flex-direction: row; gap: 16px; min-height: 160px;">
+        <svg width="36" height="36" viewBox="0 0 64 64" fill="none">
+          <path d="M16 8h32v4l-12 16 12 16v4H16v-4l12-16L16 12V8z" stroke="white" stroke-width="2.5" fill="none"/>
+          <path d="M20 14h24v2L32 32l12 16v2H20v-2l12-16L20 16v-2z" fill="url(#g5)" opacity="0.3"/>
+          <defs><linearGradient id="g5" x1="20" y1="14" x2="44" y2="34"><stop stop-color="#7b4397"/><stop offset="1" stop-color="#dc2430"/></linearGradient></defs>
+        </svg>
+        <div class="wm-serif" style="font-size: 32px;">时光</div>
+        <div class="card-tag">推荐组合</div>
+        <div class="card-label">I · 横排</div>
+      </div>
+      <!-- J: Symbol top + sans -->
+      <div class="card" style="min-height: 180px;">
+        <svg width="40" height="40" viewBox="0 0 64 64" fill="none" style="margin-bottom: 12px;">
+          <path d="M16 8h32v4l-12 16 12 16v4H16v-4l12-16L16 12V8z" stroke="white" stroke-width="2.5" fill="none"/>
+          <path d="M20 14h24v2L32 32l12 16v2H20v-2l12-16L20 16v-2z" fill="url(#g6)" opacity="0.3"/>
+          <defs><linearGradient id="g6" x1="20" y1="14" x2="44" y2="34"><stop stop-color="#7b4397"/><stop offset="1" stop-color="#dc2430"/></linearGradient></defs>
+        </svg>
+        <div class="wm-sans" style="font-size: 28px;">时光</div>
+        <div class="card-label">J · 竖排</div>
+      </div>
+      <!-- K: Monogram badge -->
+      <div class="card" style="min-height: 180px;">
+        <div style="width: 72px; height: 72px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; margin-bottom: 12px; position: relative;">
+          <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
+            <path d="M16 8h32v4l-12 16 12 16v4H16v-4l12-16L16 12V8z" stroke="white" stroke-width="2.5" fill="none"/>
+            <path d="M20 14h24v2L32 32l12 16v2H20v-2l12-16L20 16v-2z" fill="url(#g7)" opacity="0.3"/>
+            <defs><linearGradient id="g7" x1="20" y1="14" x2="44" y2="34"><stop stop-color="#7b4397"/><stop offset="1" stop-color="#dc2430"/></linearGradient></defs>
+          </svg>
+        </div>
+        <div class="wm-serif" style="font-size: 18px; letter-spacing: 8px;">时光</div>
+        <div class="card-label">K · 徽章</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 COLOR PALETTE -->
+  <div class="section">
+    <div class="section-num">04</div>
+    <div class="section-title">配色系统 Color Palette</div>
+    <div class="section-desc">以纯黑为基底，通过灰度层次构建空间感，仅在交互态引入紫红渐变作为品牌色。</div>
+
+    <!-- Gradient -->
+    <div class="gradient-bar"></div>
+    <div style="display: flex; justify-content: space-between; margin-bottom: 32px; font-family: var(--font-mono); font-size: 12px; color: var(--muted);">
+      <span>#7b4397 紫</span>
+      <span>135deg</span>
+      <span>#dc2430 红</span>
+    </div>
+
+    <!-- Swatches -->
+    <div class="swatch-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background: #000000; border: 1px solid var(--border);"></div>
+        <div class="swatch-info"><div class="swatch-name">Background</div><div class="swatch-val">#000000</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #141414;"></div>
+        <div class="swatch-info"><div class="swatch-name">Surface</div><div class="swatch-val">#141414</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #1d1d1d;"></div>
+        <div class="swatch-info"><div class="swatch-name">Surface 2</div><div class="swatch-val">#1d1d1d</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #242424;"></div>
+        <div class="swatch-info"><div class="swatch-name">Surface 3</div><div class="swatch-val">#242424</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #303030;"></div>
+        <div class="swatch-info"><div class="swatch-name">Surface 4</div><div class="swatch-val">#303030</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #999999;"></div>
+        <div class="swatch-info"><div class="swatch-name">Muted</div><div class="swatch-val">#999999</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 TYPOGRAPHY -->
+  <div class="section">
+    <div class="section-num">05</div>
+    <div class="section-title">字体系统 Typography</div>
+    <div class="section-desc">三套字体各司其职：衬线负责文学感，无衬线负责可读性，等宽负责技术感。</div>
+
+    <div class="type-sample">
+      <div class="type-label">PRIMARY · 衬线 Display</div>
+      <div class="type-specimen" style="font-family: var(--font-display); font-size: 36px; margin-bottom: 8px;">EB Garamond · 记录、思考、整理、完善</div>
+      <div class="type-meta">用途：标题、Hero 区域、品牌字标 · 400 Regular</div>
+    </div>
+    <div class="type-sample">
+      <div class="type-label">SECONDARY · 无衬线 Body</div>
+      <div class="type-specimen" style="font-family: var(--font-body); font-size: 24px; margin-bottom: 8px;">Geist · 把博客当朋友圈发，分享技术，归档资源</div>
+      <div class="type-meta">用途：正文、导航、按钮、UI 组件 · 400 / 500 / 600</div>
+    </div>
+    <div class="type-sample">
+      <div class="type-label">ACCENT · 等宽 Monospace</div>
+      <div class="type-specimen" style="font-family: var(--font-mono); font-size: 20px; margin-bottom: 8px;">JetBrains Mono · 2024.01.15 · 资源 · 3 次浏览</div>
+      <div class="type-meta">用途：日期、标签、代码、元数据 · 500 Medium</div>
+    </div>
+  </div>
+
+  <!-- 06 USAGE RULES -->
+  <div class="section">
+    <div class="section-num">06</div>
+    <div class="section-title">使用规则 Usage Rules</div>
+    <div class="section-desc">保持品牌一致性的核心准则。</div>
+
+    <div class="rule-grid">
+      <div class="rule-card do">
+        <h4>✓ 正确用法</h4>
+        <ul>
+          <li>字标在深色背景上使用白色</li>
+          <li>渐变仅用于交互态（hover / active）</li>
+          <li>符号与字标保持至少 8px 间距</li>
+          <li>最小尺寸：符号 24px，字标 14px</li>
+          <li>在浅色背景上使用深色符号</li>
+          <li>保持符号的宽高比不变形</li>
+        </ul>
+      </div>
+      <div class="rule-card dont">
+        <h4>✗ 禁止用法</h4>
+        <ul>
+          <li>不要在渐变背景上叠加渐变字标</li>
+          <li>不要拉伸或旋转符号</li>
+          <li>不要给字标加阴影或描边</li>
+          <li>不要更改渐变方向（固定 135deg）</li>
+          <li>不要在杂乱背景上放置标识</li>
+          <li>不要将符号用作装饰性图案重复排列</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Clear space -->
+    <div style="margin-top: 32px;">
+      <div class="type-sample">
+        <div class="type-label">安全空间 Clear Space</div>
+        <div style="display: flex; align-items: center; gap: 40px; margin-top: 12px;">
+          <div style="position: relative; padding: 24px; border: 1px dashed rgba(123,67,151,0.4); border-radius: 8px;">
+            <div style="position: absolute; top: 4px; left: 50%; transform: translateX(-50); font-family: var(--font-mono); font-size: 10px; color: var(--purple);">↑ x</div>
+            <div style="position: absolute; left: 4px; top: 50%; transform: translateY(-50%) rotate(-90deg); font-family: var(--font-mono); font-size: 10px; color: var(--purple);">← x</div>
+            <div class="wm-serif" style="font-size: 28px;">时光</div>
+          </div>
+          <div class="type-meta" style="max-width: 280px;">
+            x = 字标大写高度的 50%<br>
+            所有方向保持 x 的净空区域<br>
+            导航栏中 x 可缩减至 25%
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Size variants -->
+    <div style="margin-top: 24px;">
+      <div class="type-sample">
+        <div class="type-label">尺寸变体 Size Variants</div>
+        <div style="display: flex; align-items: flex-end; gap: 40px; margin-top: 16px; flex-wrap: wrap;">
+          <div>
+            <div class="wm-serif" style="font-size: 48px;">时光</div>
+            <div class="type-meta" style="margin-top: 8px;">Large · 48px · Hero / 首页</div>
+          </div>
+          <div>
+            <div class="wm-serif" style="font-size: 32px;">时光</div>
+            <div class="type-meta" style="margin-top: 8px;">Medium · 32px · 导航栏</div>
+          </div>
+          <div>
+            <div class="wm-serif" style="font-size: 20px;">时光</div>
+            <div class="type-meta" style="margin-top: 8px;">Small · 20px · 页脚 / 卡片</div>
+          </div>
+          <div>
+            <div style="width: 32px; height: 32px;">
+              <svg viewBox="0 0 64 64" fill="none" width="32" height="32">
+                <path d="M16 8h32v4l-12 16 12 16v4H16v-4l12-16L16 12V8z" stroke="white" stroke-width="2.5" fill="none"/>
+                <path d="M20 14h24v2L32 32l12 16v2H20v-2l12-16L20 16v-2z" fill="url(#g8)" opacity="0.3"/>
+                <defs><linearGradient id="g8" x1="20" y1="14" x2="44" y2="34"><stop stop-color="#7b4397"/><stop offset="1" stop-color="#dc2430"/></linearGradient></defs>
+              </svg>
+            </div>
+            <div class="type-meta" style="margin-top: 8px;">Icon · 32px · Favicon</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 07 AI GENERATION PROMPTS -->
+  <div class="section">
+    <div class="section-num">07</div>
+    <div class="section-title">生成路线 Generation Prompts</div>
+    <div class="section-desc">以下 prompt 可直接用于 AI 图片生成工具，产出各变体的高分辨率 Logo。</div>
+
+    <div class="prompt-card" style="position: relative;">
+      <button class="copy-btn" onclick="copyPrompt(this)">复制</button>
+      <h4>A · 衬线字标</h4>
+      <div class="prompt-text">Minimal wordmark logo for "时光" (Chinese characters meaning "Time"), EB Garamond serif typeface, pure white text on pure black background, elegant and literary, subtle letter-spacing, high-resolution vector style, no ornaments, no gradients, clean and modern</div>
+    </div>
+
+    <div class="prompt-card" style="position: relative;">
+      <button class="copy-btn" onclick="copyPrompt(this)">复制</button>
+      <h4>B · 无衬线字标</h4>
+      <div class="prompt-text">Modern wordmark logo for "时光" (Chinese characters meaning "Time"), Geist sans-serif typeface, bold weight, pure white text on pure black background, geometric and clean, tech-forward aesthetic, minimal, no decorations, high-resolution vector style</div>
+    </div>
+
+    <div class="prompt-card" style="position: relative;">
+      <button class="copy-btn" onclick="copyPrompt(this)">复制</button>
+      <h4>E · 沙漏折叠符号（推荐主符号）</h4>
+      <div class="prompt-text">Abstract hourglass icon logo, geometric folded paper style, two triangles meeting at a central point, white outline stroke with purple-to-red gradient fill at 30% opacity, pure black background, minimal and modern, suitable as favicon or app icon, 512x512, vector style, no text</div>
+    </div>
+
+    <div class="prompt-card" style="position: relative;">
+      <button class="copy-btn" onclick="copyPrompt(this)">复制</button>
+      <h4>F · 极简时钟符号</h4>
+      <div class="prompt-text">Minimal clock icon logo, single circle with two hands (hour hand white, minute hand purple-to-red gradient), pure black background, geometric and clean, no numbers, no tick marks, suitable as favicon, 512x512, vector style, no text</div>
+    </div>
+
+    <div class="prompt-card" style="position: relative;">
+      <button class="copy-btn" onclick="copyPrompt(this)">复制</button>
+      <h4>I · 组合标（推荐）</h4>
+      <div class="prompt-text">Logo combination mark for "时光" blog: abstract hourglass-fold icon on the left (white outline, subtle purple-red gradient fill), paired with serif Chinese text "时光" on the right, pure black background, horizontal layout, elegant and modern, suitable for website navigation bar, high-resolution, vector style</div>
+    </div>
+
+    <div class="prompt-card" style="position: relative;">
+      <button class="copy-btn" onclick="copyPrompt(this)">复制</button>
+      <h4>K · 圆形徽章</h4>
+      <div class="prompt-text">Circular badge logo for "时光" (Time), thin white circle border, abstract hourglass-fold icon centered inside with subtle purple-to-red gradient, serif text "时光" below the icon inside the circle, pure black background, elegant monogram style, suitable as profile picture or stamp, 512x512, vector style</div>
+    </div>
+  </div>
+
+  <!-- 08 APPLICATIONS -->
+  <div class="section">
+    <div class="section-num">08</div>
+    <div class="section-title">应用场景 Application Mockups</div>
+    <div class="section-desc">标识在实际界面中的预期效果。</div>
+
+    <div class="logo-grid cols-2">
+      <!-- Nav mockup -->
+      <div class="card" style="min-height: 120px; justify-content: flex-start; padding: 16px 24px; gap: 24px; flex-direction: row;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <svg width="20" height="20" viewBox="0 0 64 64" fill="none">
+            <path d="M16 8h32v4l-12 16 12 16v4H16v-4l12-16L16 12V8z" stroke="white" stroke-width="3" fill="none"/>
+            <path d="M20 14h24v2L32 32l12 16v2H20v-2l12-16L20 16v-2z" fill="url(#g9)" opacity="0.3"/>
+            <defs><linearGradient id="g9" x1="20" y1="14" x2="44" y2="34"><stop stop-color="#7b4397"/><stop offset="1" stop-color="#dc2430"/></linearGradient></defs>
+          </svg>
+          <span class="wm-serif" style="font-size: 18px;">时光</span>
+        </div>
+        <div style="display: flex; gap: 20px; font-size: 13px; color: var(--muted); margin-left: auto;">
+          <span>首页</span><span>标签</span><span>友链</span><span>关于</span>
+        </div>
+        <div class="card-label">导航栏预览</div>
+      </div>
+
+      <!-- Favicon mockup -->
+      <div class="card" style="min-height: 120px; gap: 24px;">
+        <div style="display: flex; gap: 20px; align-items: center;">
+          <div style="width: 48px; height: 48px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;">
+            <svg width="28" height="28" viewBox="0 0 64 64" fill="none">
+              <path d="M16 8h32v4l-12 16 12 16v4H16v-4l12-16L16 12V8z" stroke="white" stroke-width="2.5" fill="none"/>
+              <path d="M20 14h24v2L32 32l12 16v2H20v-2l12-16L20 16v-2z" fill="url(#g10)" opacity="0.3"/>
+              <defs><linearGradient id="g10" x1="20" y1="14" x2="44" y2="34"><stop stop-color="#7b4397"/><stop offset="1" stop-color="#dc2430"/></linearGradient></defs>
+            </svg>
+          </div>
+          <div style="width: 32px; height: 32px; border-radius: 6px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;">
+            <svg width="18" height="18" viewBox="0 0 64 64" fill="none">
+              <path d="M16 8h32v4l-12 16 12 16v4H16v-4l12-16L16 12V8z" stroke="white" stroke-width="3" fill="none"/>
+              <path d="M20 14h24v2L32 32l12 16v2H20v-2l12-16L20 16v-2z" fill="url(#g11)" opacity="0.3"/>
+              <defs><linearGradient id="g11" x1="20" y1="14" x2="44" y2="34"><stop stop-color="#7b4397"/><stop offset="1" stop-color="#dc2430"/></linearGradient></defs>
+            </svg>
+          </div>
+          <div style="width: 16px; height: 16px; border-radius: 4px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;">
+            <svg width="10" height="10" viewBox="0 0 64 64" fill="none">
+              <path d="M16 8h32v4l-12 16 12 16v4H16v-4l12-16L16 12V8z" stroke="white" stroke-width="4" fill="none"/>
+            </svg>
+          </div>
+        </div>
+        <div class="card-label">Favicon · 48px / 32px / 16px</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function copyPrompt(btn) {
+  var text = btn.parentElement.querySelector('.prompt-text').textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = '已复制';
+    setTimeout(function() { btn.textContent = '复制'; }, 1500);
+  });
+}
+</script>
+</body>
+</html>
