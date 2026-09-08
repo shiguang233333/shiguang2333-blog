@@ -4,7 +4,7 @@
       "id": 24,
       "title": "抽象风格化摄影转换：Photo Abstract Editorial",
       "slug": "抽象风格化摄影转换photo-abstract-editorial",
-      "body": "源文章中提到了两个使用方法：\n1、直接作为Codex的skill使用，实测可以通过其他兼容的agent使用该skill。下方效果预览使用opendesign-doubao-seedream-5-0-260128生成。\n2、直接作为提示词使用，实测同照片，同模型情况下生成质量略逊于作为skill使用。\n\n故，推荐大家作为skill使用而不是直接使用提示词。\n\n效果预览：\n原图（博主拍摄）：![图片说明](assets/images/image-1788860145177-678260541.webp){width=75;align=center}\nopendesign生成：![图片说明](assets/images/image-1788860159697-936540510.webp){width=71;align=center}\n\n源链接：https://github.com/ZzzLc0405/photo-abstract-editorial/tree/main",
+      "body": "源文章中提到了两个使用方法：\n\n1、直接作为Codex的skill使用，实测可以通过其他兼容的agent使用该skill。下方效果预览使用opendesign-doubao-seedream-5-0-260128生成。\n\n2、直接作为提示词使用，实测同照片，同模型情况下生成质量略逊于作为skill使用。\n\n故，推荐大家作为skill使用而不是直接使用提示词。\n\n效果预览：\n原图（博主拍摄）：![图片说明](assets/images/image-1788860145177-678260541.webp){width=51;align=left}\nopendesign生成：![图片说明](assets/images/image-1788860159697-936540510.webp){width=44;align=left}\n\n源链接：https://github.com/ZzzLc0405/photo-abstract-editorial/tree/main",
       "summary": "将一张照片转化为「原始摄影区域 + 抽象记忆面板 + 诗意英文标题」的竖向编辑作品（封面图、摘要信息取自源仓库）",
       "category": "设计",
       "tags": "Ai,Github,摄影,图片,Skill",
@@ -14,7 +14,7 @@
       "views": 0,
       "published_at": "2026-09-08 17:44:05",
       "created_at": "2026-09-08 17:44:06",
-      "updated_at": "2026-09-08 17:44:06"
+      "updated_at": "2026-09-08 17:47:46"
     },
     {
       "id": 23,
