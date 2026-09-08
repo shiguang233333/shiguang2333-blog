@@ -606,14 +606,20 @@
     }
 
     .updates-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
       gap: 20px;
     }
-    .updates-grid.col-1 { grid-template-columns: 1fr; }
-    .updates-grid.col-2 { grid-template-columns: repeat(2, 1fr); }
-    .updates-grid.col-3 { grid-template-columns: repeat(3, 1fr); }
-    .updates-grid.col-4 { grid-template-columns: repeat(4, 1fr); }
+    .updates-col {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .updates-grid.col-1 .updates-col { flex: 1 1 100%; }
+    .updates-grid > * { break-inside: avoid; page-break-inside: avoid; }
 
     /* —— 文章卡片（源：Uiverse by kennyotsu 鼠标悬停三维倾斜卡片；作用域收拢到 .update-tilt；未悬停灰底、悬停灰白渐变边框，不改变数据流）—— */
     .update-tilt {
@@ -1314,9 +1320,10 @@
       .hero-card-wrap .innerText { font-size: clamp(20px, 6.5vw, 34px); white-space: nowrap; }
       .hero-card-wrap .container::after { height: 120px; width: 120px; }
       .hero-card-wrap .container::before { height: 60px; width: 60px; }
-      .updates-grid { grid-template-columns: repeat(2, 1fr); }
-      .updates-grid.col-3 { grid-template-columns: repeat(2, 1fr); }
-      .updates-grid.col-4 { grid-template-columns: repeat(2, 1fr); }
+      .updates-grid .updates-col { flex: 1 1 45%; }
+      .updates-grid.col-1 .updates-col,
+      .updates-grid.col-3 .updates-col,
+      .updates-grid.col-4 .updates-col { flex: 1 1 45%; }
       .footer-grid { grid-template-columns: 1fr; }
       .footer-left { flex-direction: column; gap: 32px; }
       .footer-message-col { max-width: 100%; }
@@ -1601,7 +1608,20 @@
         grid.innerHTML = '<p class="empty">该分类暂无文章。</p>';
         return;
       }
-      grid.innerHTML = list.map(function (p) {
+      // 瀑布流：把每张卡片放入当前最矮的一列，让堆叠更均衡
+      var cols = parseInt((grid.className.match(/\bcol-(\d+)\b/) || [])[1]) || 4;
+      if (cols < 1 || cols > 4) cols = 4;
+      var heights = [];
+      var colEls = [];
+      grid.innerHTML = '';
+      for (var c = 0; c < cols; c++) {
+        var col = document.createElement('div');
+        col.className = 'updates-col';
+        grid.appendChild(col);
+        colEls.push(col);
+        heights.push(0);
+      }
+      function cardHtml(p) {
         var img = p.image
           ? '<img class="update-img" src="' + esc(p.image) + '" alt="" loading="lazy">'
           : '<div class="update-img"></div>';
@@ -1620,7 +1640,48 @@
                    '</div>' +
                  '</a>' +
                '</div>';
-       }).join('');
+      }
+      var GAP = 20;
+      list.forEach(function (p) {
+        var minIdx = 0;
+        for (var c = 1; c < cols; c++) if (heights[c] < heights[minIdx]) minIdx = c;
+        var holder = document.createElement('div');
+        holder.innerHTML = cardHtml(p);
+        var tile = holder.firstElementChild;
+        colEls[minIdx].appendChild(tile);
+        heights[minIdx] += tile.offsetHeight + GAP;
+      });
+      // 图片加载完成后按真实高度重新均衡分配（懒加载图片首次测量可能不准确）
+      var pending = colEls.reduce(function (n, col) { return n + col.querySelectorAll('.update-img img').length; }, 0);
+      if (pending > 0) {
+        var ticking = false;
+        function rebalance() {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(function () {
+            ticking = false;
+            var cards = grid.querySelectorAll('.update-tilt');
+            if (cards.length < 2) return;
+            var cols2 = Math.min(cols, cards.length);
+            var buckets = [];
+            for (var c = 0; c < cols2; c++) buckets.push({ el: colEls[c], h: 0 });
+            colEls.forEach(function (col, i) { col.innerHTML = ''; buckets[i].h = 0; });
+            cards.forEach(function (tile) {
+              var minIdx = 0;
+              for (var c = 1; c < cols2; c++) if (buckets[c].h < buckets[minIdx].h) minIdx = c;
+              buckets[minIdx].el.appendChild(tile);
+              buckets[minIdx].h += tile.offsetHeight + GAP;
+            });
+          });
+        }
+        colEls.forEach(function (col) {
+          col.querySelectorAll('.update-img img').forEach(function (img) {
+            if (img.complete) { rebalance(); return; }
+            img.addEventListener('load', rebalance);
+            img.addEventListener('error', rebalance);
+          });
+        });
+      }
       document.getElementById('updates-link').href = 'tags.html';
       // 卡片进场动画
       if (window.animeFX) window.animeFX.cardsIn();
