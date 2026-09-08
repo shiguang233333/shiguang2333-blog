@@ -618,6 +618,12 @@
           .then(function (data) {
             state.allPosts = data.posts || [];
             extractTags();
+            try {
+              var qTag = new URLSearchParams(window.location.search).get('tag');
+              if (qTag && state.allTags.some(function (t) { return t.name === qTag; })) {
+                state.selected = [qTag];
+              }
+            } catch (e) {}
             renderTags();
             renderPosts();
           });

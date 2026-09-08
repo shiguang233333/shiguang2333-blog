@@ -118,6 +118,23 @@
       color: var(--muted);
       font-family: var(--font-mono);
     }
+    .post-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .post-tag-link {
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--surface-4);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      transition: color .2s, border-color .2s;
+    }
+    .post-tag-link:hover { color: var(--fg); border-color: rgba(255,255,255,.3); }
     .post-summary {
       font-size: 16px;
       color: var(--muted);
@@ -707,11 +724,18 @@
           '</div>';
       }
       var summary = post.summary ? '<div class="post-summary">' + esc(post.summary) + '</div>' : '';
+      var postTags = (post.tags || '').split(',').map(function (t) { return t.trim(); }).filter(Boolean);
+      var tagLinks = postTags.length
+        ? '<span class="post-tags">' + postTags.map(function (t) {
+            return '<a class="post-tag-link" href="tags.html?tag=' + encodeURIComponent(t) + '">#' + esc(t) + '</a>';
+          }).join('') + '</span>'
+        : '';
       document.getElementById('content').innerHTML =
         '<header class="post-head">' +
           '<span class="post-tag">' + esc(post.category) + '</span>' +
           '<h1 class="post-title">' + esc(post.title) + '</h1>' +
           '<div class="post-meta">时光 · ' + esc(fmt(post.published_at)) + '</div>' +
+          tagLinks +
         '</header>' +
         cover +
         (cover ? '<hr class="section-divider">' : '') +
