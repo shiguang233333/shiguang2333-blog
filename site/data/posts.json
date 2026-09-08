@@ -1,9 +1,25 @@
 {
   "posts": [
     {
+      "id": 24,
+      "title": "抽象风格化摄影转换：Photo Abstract Editorial",
+      "slug": "抽象风格化摄影转换photo-abstract-editorial",
+      "body": "源文章中提到了两个使用方法：\n1、直接作为Codex的skill使用，实测可以通过其他兼容的agent使用该skill。下方效果预览使用opendesign-doubao-seedream-5-0-260128生成。\n2、直接作为提示词使用，实测同照片，同模型情况下生成质量略逊于作为skill使用。\n\n故，推荐大家作为skill使用而不是直接使用提示词。\n\n效果预览：\n原图（博主拍摄）：![图片说明](assets/images/image-1788860145177-678260541.webp){width=75;align=center}\nopendesign生成：![图片说明](assets/images/image-1788860159697-936540510.webp){width=71;align=center}\n\n源链接：https://github.com/ZzzLc0405/photo-abstract-editorial/tree/main",
+      "summary": "将一张照片转化为「原始摄影区域 + 抽象记忆面板 + 诗意英文标题」的竖向编辑作品（封面图、摘要信息取自源仓库）",
+      "category": "设计",
+      "tags": "Ai,Github,摄影,图片,Skill",
+      "status": "published",
+      "image": "assets/images/image-1788860301605-152333320.webp",
+      "downloads": "",
+      "views": 0,
+      "published_at": "2026-09-08 17:44:05",
+      "created_at": "2026-09-08 17:44:06",
+      "updated_at": "2026-09-08 17:44:06"
+    },
+    {
       "id": 23,
       "title": "积木拖动式UI搭建：M3E Canvas",
-      "slug": "积木拖动式ui搭建m3e-canvas",
+      "slug": "post",
       "body": "视频预览：\n\n<video controls src=\"https://raw.githubusercontent.com/lnkiai/m3e-canvas/refs/heads/main/docs/story.mp4\">{width=83;align=left}</video>\n\n\n导出提示词/JSON之后交给任意编程Agent即可（Opencode、Codex、Claude Code等）\n\n\n源Github链接：https://github.com/lnkiai/m3e-canvas\n\n在线Demo链接：https://lnkiai.github.io/m3e-canvas/",
       "summary": "近乎傻瓜式UI搭建，拖动并且放置即可完成UI设计，导出为AI提示词或JSON格式",
       "category": "设计",
@@ -12,9 +28,9 @@
       "image": "assets/images/image-1788755110433-311772447.webp",
       "downloads": "",
       "views": 0,
-      "published_at": "2026-09-07 12:53:33",
+      "published_at": "2026-09-08 16:32:42",
       "created_at": "2026-09-07 12:33:53",
-      "updated_at": "2026-09-07 14:54:43"
+      "updated_at": "2026-09-08 16:32:42"
     },
     {
       "id": 21,
