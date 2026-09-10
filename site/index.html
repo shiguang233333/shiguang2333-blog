@@ -566,44 +566,11 @@
       color: var(--fg);
     }
 
-    .grid-popover {
-      display: none;
-      align-items: center;
-      gap: 4px;
-      padding-left: 4px;
-      border-left: 1px solid var(--border);
-      margin-left: 2px;
-    }
-    .grid-popover.open { display: flex; }
-    .grid-popover-label {
-      font-size: 11px;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-    .grid-popover-options {
-      display: flex;
-      gap: 2px;
-    }
-    .grid-popover-options button {
-      width: 24px;
-      height: 24px;
-      border: none;
-      border-radius: 5px;
-      background: transparent;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.15s, color 0.15s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .grid-popover-options button:hover { color: var(--fg); background: var(--surface-3); }
-    .grid-popover-options button.active {
-      background: var(--surface-4);
+    .view-toggle button.active {
       color: var(--fg);
+      background: var(--surface-4);
     }
+    .view-toggle button:hover { color: var(--fg); }
 
     .updates-grid {
       display: flex;
@@ -618,7 +585,54 @@
       flex-direction: column;
       gap: 20px;
     }
-    .updates-grid.col-1 .updates-col { flex: 1 1 100%; }
+
+    .updates-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .list-item {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 14px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color .2s, transform .2s;
+    }
+    .list-item:hover { border-color: rgba(255,255,255,0.25); transform: translateY(-1px); }
+    .list-thumb {
+      width: 180px;
+      flex-shrink: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      aspect-ratio: 16/10;
+      background: var(--surface-4);
+    }
+    .list-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .list-info { flex: 1; min-width: 0; }
+    .list-title { font-size: 17px; font-weight: 600; margin-bottom: 6px; color: var(--fg); }
+    .list-preview {
+      font-size: 14px;
+      color: var(--muted);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .list-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-size: 13px; color: var(--muted); }
+    .list-meta .chip-list span {
+      display: inline-block;
+      font-size: 12px;
+      color: var(--muted);
+      background: var(--surface-4);
+      padding: 2px 8px;
+      border-radius: 100px;
+    }
     .updates-grid > * { break-inside: avoid; page-break-inside: avoid; }
 
     /* —— 文章卡片（源：Uiverse by kennyotsu 鼠标悬停三维倾斜卡片；作用域收拢到 .update-tilt；未悬停灰底、悬停灰白渐变边框，不改变数据流）—— */
@@ -1320,10 +1334,6 @@
       .hero-card-wrap .innerText { font-size: clamp(20px, 6.5vw, 34px); white-space: nowrap; }
       .hero-card-wrap .container::after { height: 120px; width: 120px; }
       .hero-card-wrap .container::before { height: 60px; width: 60px; }
-      .updates-grid .updates-col { flex: 1 1 45%; }
-      .updates-grid.col-1 .updates-col,
-      .updates-grid.col-3 .updates-col,
-      .updates-grid.col-4 .updates-col { flex: 1 1 45%; }
       .footer-grid { grid-template-columns: 1fr; }
       .footer-left { flex-direction: column; gap: 32px; }
       .footer-message-col { max-width: 100%; }
@@ -1452,18 +1462,12 @@
       <div class="section-title-group">
         <h2 class="section-title" id="updates-title">全部文章</h2>
         <div class="view-toggle" id="view-toggle">
-          <button id="btn-grid" title="卡片视图">
+          <button id="btn-card" title="卡片视图" class="active">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
           </button>
-          <div class="grid-popover" id="grid-popover">
-            <span class="grid-popover-label">每行</span>
-            <div class="grid-popover-options" id="grid-options">
-              <button data-cols="1">1</button>
-              <button data-cols="2">2</button>
-              <button data-cols="3">3</button>
-              <button data-cols="4">4</button>
-            </div>
-          </div>
+          <button id="btn-list" title="列表视图">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="2" y1="4" x2="14" y2="4"/><line x1="2" y1="8" x2="14" y2="8"/><line x1="2" y1="12" x2="14" y2="12"/></svg>
+          </button>
         </div>
       </div>
       <a class="section-link" id="updates-link">查看全部 →</a>
@@ -1608,9 +1612,35 @@
         grid.innerHTML = '<p class="empty">该分类暂无文章。</p>';
         return;
       }
-      // 瀑布流：把每张卡片放入当前最矮的一列，让堆叠更均衡
-      var cols = parseInt((grid.className.match(/\bcol-(\d+)\b/) || [])[1]) || 4;
-      if (cols < 1 || cols > 4) cols = 4;
+      var isListMode = grid.classList.contains('list-mode');
+
+      // ── 列表视图（与 tags.html 风格一致）──
+      if (isListMode) {
+        grid.innerHTML = list.map(function (p) {
+          var thumb = p.image
+            ? '<img src="' + esc(p.image) + '" alt="" loading="lazy">'
+            : '<img src="assets/images/framerusercontent.com/sxoUHMyDJmczUkVs28JyYftbQGM-2668bf6972.png" alt="" loading="lazy">';
+          var preview = (p.preview || p.summary || '').trim();
+          var tags = (p.tags || '').split(',').map(function (t) { return t.trim(); }).filter(Boolean);
+          return '<a href="post.html?slug=' + encodeURIComponent(p.slug) + '" class="list-item">' +
+                   '<div class="list-thumb">' + thumb + '</div>' +
+                   '<div class="list-info">' +
+                     '<div class="list-title">' + esc(p.title) + '</div>' +
+                     (preview ? '<div class="list-preview">' + esc(preview) + '</div>' : '') +
+                     '<div class="list-meta">' +
+                       '<span class="chip-list">' + tags.map(function (t) { return '<span>#' + esc(t) + '</span>'; }).join('') + '</span>' +
+                       '<span>' + esc(fmtDate(p.published_at)) + '</span>' +
+                     '</div>' +
+                   '</div>' +
+                 '</a>';
+        }).join('');
+        document.getElementById('updates-link').href = 'tags.html';
+        if (window.animeFX) window.animeFX.cardsIn();
+        return;
+      }
+
+      // ── 卡片视图（瀑布流：最短列优先）──
+      var cols = window.innerWidth >= 1200 ? 4 : window.innerWidth >= 800 ? 3 : window.innerWidth >= 500 ? 2 : 1;
       var heights = [];
       var colEls = [];
       grid.innerHTML = '';
@@ -1694,37 +1724,21 @@
     // View toggle
     (function () {
       var grid = document.getElementById('updates-grid');
-      var btnGrid = document.getElementById('btn-grid');
-      var popover = document.getElementById('grid-popover');
-      var options = document.getElementById('grid-options');
-      var savedCols = parseInt(localStorage.getItem('gridCols')) || 4;
+      var btnCard = document.getElementById('btn-card');
+      var btnList = document.getElementById('btn-list');
+      var savedMode = localStorage.getItem('updatesViewMode') || 'card';
 
-      function applyCols(cols) {
-        grid.className = 'updates-grid col-' + cols;
-        options.querySelectorAll('button').forEach(function (b) {
-          b.classList.toggle('active', parseInt(b.dataset.cols) === cols);
-        });
-        localStorage.setItem('gridCols', cols);
+      function applyViewMode(mode) {
+        grid.className = mode === 'list' ? 'updates-grid list-mode' : 'updates-grid';
+        btnCard.classList.toggle('active', mode !== 'list');
+        btnList.classList.toggle('active', mode === 'list');
+        localStorage.setItem('updatesViewMode', mode);
       }
 
-      btnGrid.addEventListener('click', function () {
-        popover.classList.toggle('open');
-      });
+      btnCard.addEventListener('click', function () { applyViewMode('card'); renderAll(); });
+      btnList.addEventListener('click', function () { applyViewMode('list'); renderAll(); });
 
-      options.addEventListener('click', function (e) {
-        var btn = e.target.closest('button[data-cols]');
-        if (!btn) return;
-        savedCols = parseInt(btn.dataset.cols);
-        applyCols(savedCols);
-      });
-
-      document.addEventListener('click', function (e) {
-        if (!popover.contains(e.target) && e.target !== btnGrid) {
-          popover.classList.remove('open');
-        }
-      });
-
-      applyCols(savedCols);
+      applyViewMode(savedMode);
     })();
 
     // 3D 倾斜卡片：透明 .tilt-canvas 覆盖层(z-index:200)会挡住 <a> 链接的点击，

@@ -2,19 +2,19 @@
   "posts": [
     {
       "id": 25,
-      "title": "图吧工具箱官网链接",
-      "slug": "图吧工具箱官网链接",
-      "body": "官网链接：https://www.tbtool.cn/",
-      "summary": "冒名、钓鱼网站极多，不要被骗，不要下载来路不明的软件",
-      "category": "资源",
-      "tags": "Windows,安装包",
+      "title": "Ai驱动数据图/导图：Diagram Design",
+      "slug": "ai驱动数据图导图diagram-design",
+      "body": "产物预览：\n![图片说明](assets/images/image-1788870334829-944746829.webp){width=64;align=left}\n\n上图完全由opencode+MiMo V2.5 Free自主生成，仅需上传技术文档",
+      "summary": "可完全由AI生成的39种数据图表、导图、流程图等，一键出图",
+      "category": "技术",
+      "tags": "开源项目,Github,Ai,Skill",
       "status": "published",
-      "image": "assets/images/image-1788867976276-238449353.webp",
+      "image": "assets/images/image-1788870252172-437233306.webp",
       "downloads": "",
       "views": 0,
-      "published_at": "2026-09-08 19:47:18",
-      "created_at": "2026-09-08 19:47:18",
-      "updated_at": "2026-09-08 19:47:18"
+      "published_at": "2026-09-08 21:06:25",
+      "created_at": "2026-09-08 21:06:25",
+      "updated_at": "2026-09-10 16:01:01"
     },
     {
       "id": 24,
