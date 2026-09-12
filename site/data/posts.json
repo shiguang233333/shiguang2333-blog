@@ -1,10 +1,26 @@
 {
   "posts": [
     {
+      "id": 26,
+      "title": "给Agent更强的网页检索能力：agent reach",
+      "slug": "给agent更强的网页检索能力agent-reach",
+      "body": "支持平台、功能预览：\n![图片说明](assets/images/image-1789191371467-596131424.webp)\n\n示例（YouTube评论拉取）：\n1、帮我进入https://www.youtube.com/watch?v=97dS_rn30SQ拉取评论\n![图片说明](assets/images/image-1789191656375-46106632.webp)\n2、拉取效果![图片说明](assets/images/image-1789191707383-473551502.webp)\n3、被拉取视频下评论区![图片说明](assets/images/image-1789191760556-643868784.webp)\n\n本次拉取使用opencode+big pickle，总耗时1分28秒\n\n一键安装指令：\n帮我安装 Agent Reach：https://raw.githubusercontent.com/Panniantong/agent-reach/main/docs/install.md\n\n源仓库：https://github.com/silently0801/agent-reach",
+      "summary": "让你的Agent不再盲目总结，受各类API限制",
+      "category": "技术",
+      "tags": "开源项目,Github,Ai,Scaffolding",
+      "status": "published",
+      "image": "assets/images/image-1789191220253-900428620.webp",
+      "downloads": "",
+      "views": 0,
+      "published_at": "2026-09-12 13:47:44",
+      "created_at": "2026-09-12 13:47:44",
+      "updated_at": "2026-09-12 13:47:44"
+    },
+    {
       "id": 25,
       "title": "Ai驱动数据图/导图：Diagram Design",
       "slug": "ai驱动数据图导图diagram-design",
-      "body": "产物预览：\n![图片说明](assets/images/image-1788870334829-944746829.webp){width=64;align=left}\n\n上图完全由opencode+MiMo V2.5 Free自主生成，仅需上传技术文档",
+      "body": "产物预览：\n![图片说明](assets/images/image-1788870334829-944746829.webp){width=64;align=left}\n\n上图完全由opencode+MiMo V2.5 Free自主生成，仅需上传技术文档\n源仓库：https://github.com/cathrynlavery/diagram-design",
       "summary": "可完全由AI生成的39种数据图表、导图、流程图等，一键出图",
       "category": "技术",
       "tags": "开源项目,Github,Ai,Skill",
@@ -14,7 +30,7 @@
       "views": 0,
       "published_at": "2026-09-08 21:06:25",
       "created_at": "2026-09-08 21:06:25",
-      "updated_at": "2026-09-10 16:01:01"
+      "updated_at": "2026-09-12 12:11:37"
     },
     {
       "id": 24,
