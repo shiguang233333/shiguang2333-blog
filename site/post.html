@@ -944,18 +944,23 @@
 
     function loadRelated(post, allPosts) {
       var listEl = document.getElementById('related-list');
-      var tags = (post.tags || '').split(',').map(function (t) { return t.trim(); }).filter(Boolean);
-      if (tags.length === 0) {
-        listEl.innerHTML = '<p class="related-empty">暂无相关文章</p>';
-        return;
-      }
-      var related = allPosts
-        .filter(function (p) { return p.slug !== post.slug && p.status === 'published'; })
-        .filter(function (p) {
-          var postTags = (p.tags || '').split(',').map(function (t) { return t.trim(); }).filter(Boolean);
-          return tags.some(function (t) { return postTags.indexOf(t) !== -1; });
-        })
+      var base = allPosts.filter(function (p) { return p.slug !== post.slug && p.status === 'published'; });
+      // 优先按分类推荐同类文章
+      var related = base
+        .filter(function (p) { return post.category && p.category === post.category; })
         .slice(0, 5);
+      // 同分类不足时，按标签兜底推荐
+      if (related.length === 0) {
+        var tags = (post.tags || '').split(',').map(function (t) { return t.trim(); }).filter(Boolean);
+        if (tags.length > 0) {
+          related = base
+            .filter(function (p) {
+              var postTags = (p.tags || '').split(',').map(function (t) { return t.trim(); }).filter(Boolean);
+              return tags.some(function (t) { return postTags.indexOf(t) !== -1; });
+            })
+            .slice(0, 5);
+        }
+      }
       if (related.length === 0) {
         listEl.innerHTML = '<p class="related-empty">暂无相关文章</p>';
         return;
