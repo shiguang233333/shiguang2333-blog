@@ -751,6 +751,7 @@
   </footer>
 
   <script>
+    marked.setOptions({ breaks: true, gfm: true });
     var slug = new URLSearchParams(location.search).get('slug');
 
     fetch('data/posts.json')

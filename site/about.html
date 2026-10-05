@@ -59,10 +59,7 @@
     .nav-links a:hover { color: var(--fg); }
     .nav-right { display: flex; align-items: center; gap: 16px; }
 
-    .wrap { padding: 48px var(--px) 80px; }
-
-    h1 { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
-    .sub { color: var(--muted); margin-bottom: 40px; }
+    .wrap { padding: 32px var(--px) 80px; }
 
     .panel {
       background: var(--surface);
@@ -74,6 +71,56 @@
     .panel-title { font-size: 14px; color: var(--muted); margin-bottom: 14px; }
     .panel p { margin-bottom: 14px; color: var(--fg); }
     .panel p:last-child { margin-bottom: 0; }
+
+    /* —— AURORA VEIL HERO —— */
+    .aurora-hero {
+      position: relative;
+      width: 100%;
+      height: 560px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .aurora-hero canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    .aurora-hero .aurora-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      pointer-events: none;
+    }
+    .aurora-hero h1 {
+      font-size: 52px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #e0e0e0, #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
+    }
+    .aurora-hero .aurora-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.6);
+      font-weight: 300;
+      letter-spacing: 6px;
+    }
+    .aurora-hero .aurora-fade {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 200px;
+      background: linear-gradient(to top, var(--bg), transparent);
+      z-index: 1;
+    }
 
     /* FOOTER */
     .footer { background:var(--bg); border-top:1px solid var(--border); padding:64px var(--px) 48px; }
@@ -244,6 +291,9 @@
     }
     @media (max-width: 640px) {
       :root { --px: 16px; }
+      .aurora-hero { height: 400px; }
+      .aurora-hero h1 { font-size: 36px; }
+      .aurora-hero .aurora-sub { font-size: 14px; letter-spacing: 3px; }
       .music-card .card { max-width: 44px; padding: 0; justify-content: center; }
       .music-card .img { margin-left: 0; }
       .music-card .textBox { display: none; }
@@ -319,7 +369,7 @@
   <nav class="nav">
     <div class="nav-left">
       <a href="index.html" class="nav-logo">
-        <svg viewBox="0 0 24 24" fill="none"><defs><linearGradient id="logo-g" x1="0" y1="0" x2="24" y2="24"><stop offset="0%" stop-color="#7b4397"/><stop offset="100%" stop-color="#dc2430"/></linearGradient></defs><rect x="2" y="5" width="12" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="3" width="12" height="16" rx="2" stroke="currentColor" stroke-width="1.5" opacity=".6"/><rect x="8" y="1" width="12" height="16" rx="2" stroke="url(#logo-g)" stroke-width="1.5"/></svg>
+        <svg viewBox="0 0 24 24" fill="none"><defs><linearGradient id="logo-g" x1="0" y1="0" x2="24" y2="24"><stop offset="0%" stop-color="#7b4397"></stop><stop offset="100%" stop-color="#dc2430"></stop></linearGradient></defs><rect x="2" y="5" width="12" height="16" rx="2" stroke="currentColor" stroke-width="1.5"></rect><rect x="5" y="3" width="12" height="16" rx="2" stroke="currentColor" stroke-width="1.5" opacity=".6"></rect><rect x="8" y="1" width="12" height="16" rx="2" stroke="url(#logo-g)" stroke-width="1.5"></rect></svg>
         时光
       </a>
       <div class="nav-links">
@@ -338,21 +388,28 @@
           </div>
         </div>
       </div>
-      <audio id="bgm-audio" src="bgm.flac" preload="auto" loop></audio>
+      <audio id="bgm-audio" src="bgm.flac" preload="auto" loop=""></audio>
       <a href="index.html#subscribe" class="btn-sloth">留言</a>
     </div>
   </nav>
 
-  <div class="wrap">
-    <h1>关于我</h1>
-    <p class="sub">很高兴认识你。</p>
+  <section class="aurora-hero">
+    <canvas id="aurora-canvas"></canvas>
+    <div class="aurora-fade"></div>
+    <div class="aurora-content">
+      <h1>关于我</h1>
+      <p class="aurora-sub">很高兴认识你</p>
+    </div>
+  </section>
 
+  <div class="wrap">
     <div class="panel">
-      <div class="panel-title">简单介绍</div>
+      
       <p>不知道在看这个的你是怎么点进来的
 但是，你好！
-这是一个普通的博客，用来存储我觉得好用或好玩的东西。本网站由Github托管并开源，部分UI取自uiverse.com并已标出。</p>
-      <p>        坏消息是资源应该都会通过夸克网盘进行上传，链接挂了我也没有办法第一时间知道。</p>
+这是一个普通的博客，用来存储我觉得好用或好玩的东西。本网站由Github托管并开源，部分UI取自uiverse.com并已标出。
+</p>
+      <p>坏消息是资源应该都会通过夸克网盘进行上传，链接挂了我也没有办法第一时间知道。但是上面的极光特效很炫酷吧！</p>
     </div>
 
     
@@ -384,7 +441,7 @@
             <form class="footer-message-form" id="message-form">
               <div class="message-card">
                 <div class="input-container">
-                  <input class="input" id="message-content" name="text" type="text" placeholder="写下你的留言…" required aria-label="留言内容">
+                  <input class="input" id="message-content" name="text" type="text" placeholder="写下你的留言…" required="" aria-label="留言内容">
                 </div>
                 <button type="submit" class="send-btn" id="send-btn">
                   <div class="outline"></div>
@@ -399,7 +456,7 @@
                 </button>
               </div>
             </form>
-            <p class="subscribe-msg" id="message-msg" hidden></p>
+            <p class="subscribe-msg" id="message-msg" hidden=""></p>
           </div>
         </div>
       </div>
@@ -437,6 +494,88 @@
   </button>
 
   <script>
+    // ---- Aurora Veil Canvas ----
+    (function () {
+      var canvas = document.getElementById('aurora-canvas');
+      if (!canvas) return;
+      var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (!gl) return;
+
+      function resize() {
+        var dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = canvas.clientWidth * dpr;
+        canvas.height = canvas.clientHeight * dpr;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      var vsSource = 'attribute vec2 p;void main(){gl_Position=vec4(p,0,1);}';
+      var fsSource = [
+        'precision mediump float;',
+        'uniform float t;',
+        'uniform vec2 r;',
+        'float s(float x){return fract(sin(x)*43758.5453);}',
+        'void main(){',
+        'vec2 uv=gl_FragCoord.xy/r;',
+        'float x=uv.x;',
+        'float y=uv.y;',
+        'float a=0.0;',
+        'float s1=sin(x*3.0+t*0.5)*0.5+0.5;',
+        'float s2=sin(x*5.0-t*0.3+1.0)*0.5+0.5;',
+        'float s3=sin(x*7.0+t*0.7+2.0)*0.5+0.5;',
+        'float v1=pow(sin(y*3.14159*s1+t*0.4)*0.5+0.5, 3.0);',
+        'float v2=pow(sin(y*3.14159*s2-t*0.3+1.0)*0.5+0.5, 4.0);',
+        'float v3=pow(sin(y*3.14159*s3+t*0.6+2.0)*0.5+0.5, 2.0);',
+        'vec3 c1=vec3(0.482,0.263,0.592);',
+        'vec3 c2=vec3(0.863,0.141,0.188);',
+        'vec3 c3=vec3(0.3,0.5,0.9);',
+        'vec3 col=c1*v1+c2*v2+c3*v3;',
+        'float fade=smoothstep(0.0,0.05,y)*smoothstep(1.0,0.85,y);',
+        'float edge=smoothstep(0.0,0.02,x)*smoothstep(1.0,0.98,x);',
+        'a=fade*edge*0.85;',
+        'gl_FragColor=vec4(col*a,a*0.95);',
+        '}'
+      ].join('\n');
+
+      function compileShader(src, type) {
+        var s = gl.createShader(type);
+        gl.shaderSource(s, src);
+        gl.compileShader(s);
+        return s;
+      }
+      var prog = gl.createProgram();
+      gl.attachShader(prog, compileShader(vsSource, gl.VERTEX_SHADER));
+      gl.attachShader(prog, compileShader(fsSource, gl.FRAGMENT_SHADER));
+      gl.linkProgram(prog);
+      gl.useProgram(prog);
+
+      var buf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+      var pLoc = gl.getAttribLocation(prog, 'p');
+      gl.enableVertexAttribArray(pLoc);
+      gl.vertexAttribPointer(pLoc, 2, gl.FLOAT, false, 0, 0);
+
+      var uT = gl.getUniformLocation(prog, 't');
+      var uR = gl.getUniformLocation(prog, 'r');
+
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+      var start = Date.now();
+      function frame() {
+        var elapsed = (Date.now() - start) / 1000;
+        gl.clearColor(0, 0, 0, 0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.uniform1f(uT, elapsed);
+        gl.uniform2f(uR, canvas.width, canvas.height);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        requestAnimationFrame(frame);
+      }
+      frame();
+    })();
+
     var backToTop = document.getElementById('back-to-top');
     backToTop.addEventListener('click', function () {
       window.scrollTo({ top: 0, behavior: 'smooth' });
