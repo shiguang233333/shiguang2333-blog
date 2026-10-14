@@ -648,9 +648,13 @@
       bottom: unset;
       transition-duration: 0.3s;
     }
+    .reading-progress { position: fixed; inset: 0 0 auto; height: 3px; z-index: 9999; pointer-events: none; background: rgba(255,255,255,.12); }
+    .reading-progress__bar { width: 100%; height: 100%; transform: scaleX(0); transform-origin: left center; background: linear-gradient(90deg, #ffffff 0%, #d8d8d8 52%, #8a8a8a 100%); will-change: transform; }
+    @media (prefers-reduced-motion: reduce) { .reading-progress__bar { transition: none; } }
   </style>
 </head>
 <body>
+  <div class="reading-progress" role="progressbar" aria-label="文章阅读进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="reading-progress__bar"></div></div>
 
   <nav class="nav">
     <div class="nav-left">
@@ -1142,4 +1146,36 @@
       backToTopLastY = y;
     }, { passive: true });
   </script>
+
+  <script>
+    (function () {
+      var progress = document.querySelector('.reading-progress');
+      var bar = progress && progress.querySelector('.reading-progress__bar');
+      var frame = 0;
+      function updateReadingProgress() {
+        frame = 0;
+        var article = document.getElementById('content');
+        if (!article || !bar) { if (progress) progress.hidden = true; return; }
+        progress.hidden = false;
+        var rect = article.getBoundingClientRect();
+        var top = rect.top + window.scrollY;
+        var distance = Math.max(1, article.offsetHeight - window.innerHeight);
+        var value = Math.max(0, Math.min(100, ((window.scrollY - top) / distance) * 100));
+        bar.style.transform = 'scaleX(' + (value / 100) + ')';
+        progress.setAttribute('aria-valuenow', String(Math.round(value)));
+      }
+      function requestUpdate() { if (!frame) frame = requestAnimationFrame(updateReadingProgress); }
+      window.addEventListener('scroll', requestUpdate, { passive: true });
+      window.addEventListener('resize', requestUpdate);
+      document.addEventListener('DOMContentLoaded', requestUpdate);
+      if ('ResizeObserver' in window) {
+        var observer = new ResizeObserver(requestUpdate);
+        var timer = setInterval(function () { var article = document.getElementById('content'); if (article) { observer.observe(article); clearInterval(timer); requestUpdate(); } }, 150);
+        setTimeout(function () { clearInterval(timer); }, 10000);
+      }
+      window.addEventListener('load', requestUpdate);
+      requestUpdate();
+    })();
+  </script>
+
 </body></html>

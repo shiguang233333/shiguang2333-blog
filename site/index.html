@@ -197,37 +197,44 @@
       width: 100%;
       max-width: 260px;
       height: 44px;
-      background: #353535;
-      border-radius: 14px;
+      background: rgba(29, 29, 29, 0.88);
+      border: 1px solid var(--border);
+      border-radius: 12px;
       display: flex;
       align-items: center;
-      justify-content: left;
-      backdrop-filter: blur(10px);
-      transition: transform 0.5s ease-in-out;
+      justify-content: flex-start;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+      transition: background-color .24s ease, border-color .24s ease, box-shadow .24s ease, transform .24s ease;
       cursor: pointer;
       position: relative;
     }
     .music-card .card:hover,
     .music-card .card.playing {
-      transform: scale(1.05);
+      background: var(--surface-3);
+      border-color: rgba(255,255,255,0.24);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), 0 4px 14px rgba(0,0,0,0.22);
+      transform: translateY(-1px);
     }
-    .music-card .card::before {
+    .music-card .card.playing { border-color: transparent; }
+    .music-card .card.playing::after {
       content: "";
       position: absolute;
-      inset: 0;
-      border-radius: 14px;
+      inset: -1px;
       padding: 1px;
-      background: linear-gradient(135deg, #7b4397, #dc2430);
+      border-radius: 13px;
+      background: linear-gradient(110deg, #777 0%, #f5f5f5 22%, #a4a4a4 42%, #fff 58%, #777 78%, #f5f5f5 100%);
+      background-size: 240% 100%;
+      animation: musicBorderShimmer 3.2s linear infinite;
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor;
-              mask-composite: exclude;
-      opacity: 0;
-      transition: opacity 0.3s ease-in-out;
+      mask-composite: exclude;
       pointer-events: none;
     }
-    .music-card .card:hover::before,
-    .music-card .card.playing::before {
-      opacity: 1;
+    @keyframes musicBorderShimmer { to { background-position: 240% 0; } }
+    @media (prefers-reduced-motion: reduce) {
+      .music-card .card.playing::after { animation: none; background-position: 50% 0; }
     }
     .music-card .img {
       width: 34px;
@@ -235,13 +242,14 @@
       margin-left: 8px;
       border-radius: 8px;
       background: url('music-icon.jpeg') center/cover no-repeat;
+      border: 1px solid rgba(255,255,255,0.12);
       flex-shrink: 0;
     }
     .music-card .textBox {
       width: calc(100% - 62px);
       margin-left: 10px;
       color: #fff;
-      font-family: 'Poppins', sans-serif;
+      font-family: var(--font-body);
       min-width: 0;
       padding-right: 8px;
     }
@@ -504,6 +512,18 @@
 
     .filter-btn:active {
       scale: 0.95;
+    }
+
+    /* 首页文章卡片：轻盈错峰揭示 */
+    @keyframes cardReveal { from { opacity: 0; transform: translateY(18px) scale(.985); filter: blur(4px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
+    #updates-grid .update-tilt, #updates-grid .list-item { animation: cardReveal .62s cubic-bezier(.2,.75,.25,1) both; animation-delay: var(--enter-delay, 0ms); }
+    /* 分类栏：首次依次浮现；切换分类只过渡激活态，不重播入场 */
+    @keyframes filterReveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    #blog-filters.is-entering .filter-btn { animation: filterReveal .45s cubic-bezier(.2,.75,.25,1) both; animation-delay: calc(var(--filter-index, 0) * 45ms); }
+    .filter-btn { transition: background-color .28s ease, color .28s ease, box-shadow .28s ease, transform .28s ease; }
+    @media (prefers-reduced-motion: reduce) {
+      #updates-grid .update-tilt, #updates-grid .list-item, #blog-filters.is-entering .filter-btn { animation: none !important; }
+      .filter-btn { transition: none; }
     }
 
     /* UPDATES */
@@ -1560,6 +1580,12 @@
     var state = { posts: [], filter: '全部' };
 
     var CATEGORIES = ['思考', '技术', '设计', '教程', '灵感', '随笔', '资源'];
+    var filtersEntered = false;
+
+    function animateRenderedItems(selector) {
+      var items = document.querySelectorAll(selector);
+      items.forEach(function (item, index) { item.style.setProperty('--enter-delay', Math.min(index, 8) * 55 + 'ms'); });
+    }
 
     function esc(s) {
       return String(s == null ? '' : s).replace(/[&<>"']/g, function (m) {
@@ -1576,8 +1602,8 @@
     function renderFilters() {
       var el = document.getElementById('blog-filters');
       var names = ['全部'].concat(CATEGORIES);
-      el.innerHTML = names.map(function (n) {
-        return '<button class="filter-btn' + (n === state.filter ? ' active' : '') + '" data-cat="' + n + '">' +
+      el.innerHTML = names.map(function (n, index) {
+        return '<button class="filter-btn' + (n === state.filter ? ' active' : '') + '" style="--filter-index:' + index + '" data-cat="' + n + '">' +
                  '<span class="filter-label">' + n + '</span>' +
                '</button>';
       }).join('');
@@ -1588,7 +1614,11 @@
           renderAll();
         });
       });
-      if (window.animeFX) window.animeFX.filtersPop();
+      if (!filtersEntered) {
+        filtersEntered = true;
+        el.classList.add('is-entering');
+        window.setTimeout(function () { el.classList.remove('is-entering'); }, 900);
+      }
     }
 
     function filteredPosts() {
@@ -1636,7 +1666,7 @@
                  '</a>';
         }).join('');
         document.getElementById('updates-link').href = 'tags.html';
-        if (window.animeFX) window.animeFX.cardsIn();
+        animateRenderedItems('#updates-grid .list-item');
         return;
       }
 
@@ -1715,7 +1745,7 @@
       }
       document.getElementById('updates-link').href = 'tags.html';
       // 卡片进场动画
-      if (window.animeFX) window.animeFX.cardsIn();
+      animateRenderedItems('#updates-grid .update-tilt');
     }
 
     function renderAll() {
@@ -1970,30 +2000,7 @@
     // 首屏：Hero + 筛选按钮进场
     // 注：type=module 为延迟执行，此时 DOM 已就绪，直接调用即可
     window.animeFX.heroReveal();
-    window.animeFX.filtersPop();
 
-    // 文章卡片：进入正文视口时滚动进场（只触发一次初始进场）
-    var cardsDone = false;
-    function tryCardsIn() {
-      if (cardsDone) return;
-      var cards = document.querySelectorAll('#updates-grid .update-tilt');
-      if (!cards.length) return;
-      cardsDone = true;
-      window.animeFX.cardsIn();
-    }
-
-    document.addEventListener('scroll', function () {
-      if (window.scrollY > 40) tryCardsIn();
-    }, { passive: true });
-
-    // 轮询等待文章数据渲染完成后再进场（数据是异步 fetch 的）
-    var t = setInterval(function () {
-      tryCardsIn();
-      // 数据加载完成 且 动画已触发（或已近正文）即停止轮询
-      if (cardsDone) clearInterval(t);
-    }, 200);
-    // 兜底：3 秒后无论如何尝试一次并停止
-    setTimeout(function () { tryCardsIn(); clearInterval(t); }, 3000);
   </script>
 
 </body></html>
