@@ -1,6 +1,23 @@
 {
   "posts": [
     {
+      "id": 37,
+      "title": "SideStore-80045报错解决办法",
+      "slug": "sidestore-80045报错解决办法",
+      "body": "1、更新到最新版本iloader（10月18日是2.3.9）\n2、Anisette服务器选择SideStore (Windows ADI)\n如果没有显示则自定义为：win.ani.sidestore.io\n3、选择二合一的稳定版本安装\n4、安装完成后在iPhone上选择同样的Anisette服务器\n5、尝试登陆\n**\n注：这是我目前（10月18日）的唯一解决方案，未进行其他排查\nNightly测试始终无法登陆\n**",
+      "summary": "或者其他服务器原因登陆不上的临时解决方案",
+      "category": "技术",
+      "tags": "开源项目,Github",
+      "status": "published",
+      "image": "assets/images/image-1792290971272-173097659.webp",
+      "downloads": "",
+      "files": "[]",
+      "views": 0,
+      "published_at": "2026-10-18 10:42:18",
+      "created_at": "2026-10-18 10:42:18",
+      "updated_at": "2026-10-18 10:42:18"
+    },
+    {
       "id": 36,
       "title": "开源无线Carplay方案：DiPlay",
       "slug": "开源无线carplay方案diplay",
