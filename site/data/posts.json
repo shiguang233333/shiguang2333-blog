@@ -1,6 +1,40 @@
 {
   "posts": [
     {
+      "id": 39,
+      "title": "随意切换Agent API源：CC Switch",
+      "slug": "随意切换agent-api源cc-switch",
+      "body": "**支持Agent：Claude Code（CLI/Desktop），Codex（CLI/Desktop）等，详见图中左侧栏**\n以Claude Code为例，直接点击右上角“添加供应商”\n![图片说明](assets/images/image-1793250477413-767903451.webp)\n进入页面可以搜索框直接搜大型API供应商，如果没有的话点“自定义配置”\n![图片说明](assets/images/image-1793250582697-361574678.webp)\n以Modelflare为例，直接填入key保存即可，下方可进行测速\n![图片说明](assets/images/image-1793250646911-503039248.webp)\n\n## 注：部分需要查看中转站API兼容，非原生协议大部分需要开启CC Switch路由，将在后期文章详细讲解\n\n\n\n\n\n\n官网链接：https://ccswitch.io/zh/",
+      "summary": "本篇只介绍基础功能，其他进阶功能后续开新文",
+      "category": "技术",
+      "tags": "开源项目,Github,Ai,Agent",
+      "status": "published",
+      "image": "assets/images/image-1793250107437-646403932.webp",
+      "downloads": "",
+      "files": "[]",
+      "views": 0,
+      "published_at": "2026-10-29 13:20:02",
+      "created_at": "2026-10-29 13:20:02",
+      "updated_at": "2026-10-29 13:20:02"
+    },
+    {
+      "id": 38,
+      "title": "AI驱动的万物逆向工具：REA",
+      "slug": "ai驱动的万物逆向工具rea",
+      "body": "**1、测试环境：**\n测试设备：MacBook\n测试平台：Claude Desktop\n测试模型：5.5 Haiku 思考中度\n**2、安装步骤**\n其实很简单，跟你的Agent说安装REA即可，如果AI没有搜索到，则给他地址，详情见图中历史记录：\n![图片说明](assets/images/image-1793249460697-369196501.webp)\n**3、使用步骤**\n告诉Agent逆向什么东西，或者直接上传文件即可\n![图片说明](assets/images/image-1793249645901-686238380.webp)\n随后则可以看到逆向分析成功报告，图中apk为例约耗时20min![图片说明](assets/images/image-1793249738105-153690595.webp)\n\n## 注：有些Agent会问逆向用途，正常回答即可，不会被卡\n\nREA官网：https://rea.tools/\n",
+      "summary": "从下载安装到实践",
+      "category": "技术",
+      "tags": "开源项目,Github,Ai,Agent,Skill",
+      "status": "published",
+      "image": "assets/images/image-1793249404776-920001505.webp",
+      "downloads": "",
+      "files": "[]",
+      "views": 0,
+      "published_at": "2026-10-29 12:58:19",
+      "created_at": "2026-10-29 12:58:19",
+      "updated_at": "2026-10-29 12:58:19"
+    },
+    {
       "id": 37,
       "title": "SideStore-80045报错解决办法",
       "slug": "sidestore-80045报错解决办法",
